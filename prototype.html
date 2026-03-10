@@ -598,6 +598,107 @@ button,input,textarea{font-family:inherit;outline:none;border:none;background:no
   min-height:20px;max-height:120px;overflow-y:auto;display:block;margin-bottom:20px;
 }
 .agent-ta::placeholder{color:#9ca3af}
+
+/* ══════════════════════════════════════════════════════
+   SCREEN 4 ── NEW TASK  (Manus-style home page)
+══════════════════════════════════════════════════════ */
+#s-newtask{background:#f0f0ee;display:flex;width:100%;height:100%}
+
+/* Manus sidebar */
+.ms{width:248px;flex-shrink:0;background:#e8e8e6;display:flex;flex-direction:column;
+  height:100%;border-right:1px solid rgba(0,0,0,.06);transition:width .22s ease;overflow:hidden}
+.ms-header{display:flex;align-items:center;padding:18px 12px 8px;gap:8px}
+.ms-wordmark{font-size:15px;font-weight:600;color:#111;letter-spacing:-.3px;flex:1}
+.ms-icon-btn{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;
+  justify-content:center;color:#555;cursor:pointer;background:none;border:none;flex-shrink:0}
+.ms-icon-btn:hover{background:rgba(0,0,0,.07)}
+.ms-icon-btn svg{width:18px;height:18px}
+.ms-nav{padding:0 8px;display:flex;flex-direction:column;gap:2px}
+.ms-nav-item{display:flex;align-items:center;gap:10px;height:36px;padding:0 10px;
+  border-radius:9px;font-size:14px;color:#222;cursor:pointer;background:none;border:none;
+  width:100%;text-align:left;font-family:inherit;position:relative}
+.ms-nav-item:hover{background:rgba(0,0,0,.06)}
+.ms-nav-item.active{background:#d4d4d2;color:#111;font-weight:500}
+.ms-nav-item svg{width:18px;height:18px;flex-shrink:0;color:#555}
+.ms-nav-item.active svg{color:#111}
+.ms-badge{background:#2563eb;color:#fff;font-size:10px;font-weight:600;
+  padding:1px 5px;border-radius:4px;margin-left:4px;line-height:16px}
+.ms-section{display:flex;align-items:center;padding:12px 12px 4px;
+  font-size:11px;font-weight:600;color:#888;letter-spacing:.04em;text-transform:uppercase}
+.ms-section-add{margin-left:auto;width:20px;height:20px;border-radius:5px;
+  display:flex;align-items:center;justify-content:center;color:#888;cursor:pointer}
+.ms-section-add:hover{background:rgba(0,0,0,.08)}
+.ms-section-add svg{width:14px;height:14px}
+.ms-project{display:flex;align-items:center;gap:8px;padding:0 12px;height:32px;
+  border-radius:8px;margin:0 8px;font-size:13px;color:#333;cursor:pointer}
+.ms-project:hover{background:rgba(0,0,0,.06)}
+.ms-project svg{width:16px;height:16px;color:#888}
+.ms-tasks{flex:1;overflow-y:auto;padding-bottom:8px}
+.ms-task{display:flex;align-items:center;gap:10px;padding:0 12px 0 10px;height:36px;
+  margin:0 8px;border-radius:8px;font-size:13px;color:#333;cursor:pointer;white-space:nowrap;
+  overflow:hidden}
+.ms-task:hover{background:rgba(0,0,0,.06)}
+.ms-task-ico{width:20px;height:20px;border-radius:5px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:11px}
+.ms-task-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ms-divider{height:1px;background:rgba(0,0,0,.07);margin:8px 12px}
+.ms-referral{margin:8px 10px;padding:12px;border-radius:12px;background:#fff;
+  border:1px solid rgba(0,0,0,.08);cursor:pointer}
+.ms-referral-title{font-size:12px;font-weight:500;color:#222}
+.ms-referral-sub{font-size:11px;color:#888;margin-top:2px}
+.ms-footer-nav{display:flex;align-items:center;gap:4px;padding:6px 10px 12px}
+.ms-foot-btn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;color:#666;cursor:pointer;background:none;border:none}
+.ms-foot-btn:hover{background:rgba(0,0,0,.07)}
+.ms-foot-btn svg{width:18px;height:18px}
+
+/* New task main */
+.nt-main{flex:1;display:flex;flex-direction:column;height:100%;overflow:hidden;
+  background:#fafaf8;position:relative}
+.nt-topbar{display:flex;align-items:center;justify-content:flex-end;
+  padding:14px 24px;gap:12px;flex-shrink:0}
+.nt-plan-pill{background:#f0f0ee;border:1px solid rgba(0,0,0,.12);border-radius:20px;
+  padding:4px 12px;font-size:12px;color:#555;font-weight:500}
+.nt-trial-btn{font-size:13px;color:#2563eb;font-weight:500;cursor:pointer;
+  background:none;border:none}
+.nt-trial-btn:hover{text-decoration:underline}
+.nt-center{flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:0 0 80px;gap:28px}
+.nt-greeting{font-size:34px;font-weight:500;color:#111;letter-spacing:-.5px;
+  text-align:center}
+.nt-input-card{width:680px;background:#fff;border-radius:20px;
+  box-shadow:0 2px 16px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.06);
+  padding:16px 16px 12px;display:flex;flex-direction:column;gap:12px}
+.nt-ta{width:100%;resize:none;border:none;outline:none;font-size:15px;color:#111;
+  line-height:1.5;min-height:56px;max-height:160px;font-family:inherit;
+  background:transparent;padding:0}
+.nt-ta::placeholder{color:#aaa}
+.nt-toolbar{display:flex;align-items:center;gap:6px}
+.nt-tool-btn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;color:#555;cursor:pointer;background:none;border:none;flex-shrink:0}
+.nt-tool-btn:hover{background:#f3f3f1}
+.nt-tool-btn svg{width:18px;height:18px}
+.nt-spacer{flex:1}
+.nt-send{width:32px;height:32px;border-radius:50%;background:#111;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;
+  flex-shrink:0;transition:background .15s}
+.nt-send:hover{background:#374151}
+.nt-send svg{width:16px;height:16px;color:#fff}
+.nt-tool-connect{display:flex;align-items:center;gap:8px;padding:8px 12px;
+  background:#f5f5f3;border-radius:10px;font-size:12px;color:#777;width:680px}
+.nt-connect-icons{display:flex;gap:4px;margin-left:auto;align-items:center}
+.nt-connect-icon{width:20px;height:20px;border-radius:5px;
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
+.nt-connect-close{width:20px;height:20px;display:flex;align-items:center;
+  justify-content:center;color:#aaa;cursor:pointer;margin-left:4px}
+.nt-connect-close svg{width:10px;height:10px}
+.nt-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:680px}
+.nt-chip{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:20px;
+  background:#fff;border:1px solid rgba(0,0,0,.1);font-size:13px;color:#333;
+  cursor:pointer;white-space:nowrap;font-family:inherit;transition:background .12s}
+.nt-chip:hover{background:#f5f5f3;border-color:rgba(0,0,0,.15)}
+.nt-chip svg{width:16px;height:16px;color:#666}
+
 </style>
 </head>
 <body>
@@ -1143,7 +1244,7 @@ button,input,textarea{font-family:inherit;outline:none;border:none;background:no
         <svg><use href="#icon-Sidebar"/></svg>
       </button>
       <div style="height:4px"></div>
-      <button class="sb-icon-btn active" data-tip="新建对话">
+      <button class="sb-icon-btn active" data-tip="新建对话" onclick="showScreen('s-newtask')">
         <svg><use href="#icon-ChatAdd"/></svg>
       </button>
       <button class="sb-icon-btn" data-tip="对话">
@@ -1163,7 +1264,7 @@ button,input,textarea{font-family:inherit;outline:none;border:none;background:no
     <!-- full content -->
     <div class="sb-content">
       <div class="sb-nav">
-        <button class="sb-nav-btn">
+        <button class="sb-nav-btn" onclick="showScreen('s-newtask')">
           <svg><use href="#icon-ChatAdd"/></svg>New chat
         </button>
         <button class="sb-nav-btn">
@@ -1770,6 +1871,29 @@ function esc(t){
           .replace(/\n/g,'<br>');
 }
 
+
+/* ── NEW TASK SCREEN ── */
+function ntKey(e){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ntSend();}
+  const ta=document.getElementById('nt-ta');
+  requestAnimationFrame(()=>{ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,160)+'px';});
+}
+function ntSend(){
+  const ta=document.getElementById('nt-ta');
+  const val=ta.value.trim();
+  if(!val)return;
+  // pre-fill the chat input with the text and navigate
+  const chatTa=document.querySelector('.input-ta');
+  if(chatTa){chatTa.value=val;}
+  ta.value='';ta.style.height='auto';
+  showScreen('s-chat');
+}
+function ntChip(text){
+  const ta=document.getElementById('nt-ta');
+  ta.value=text;ta.focus();
+  requestAnimationFrame(()=>{ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,160)+'px';});
+}
+
 /* ── INIT ── */
 document.querySelectorAll('.input-ta,.agent-ta').forEach(ta=>{
   ta.addEventListener('input',function(){
@@ -1778,5 +1902,185 @@ document.querySelectorAll('.input-ta,.agent-ta').forEach(ta=>{
   });
 });
 </script>
+
+
+<!-- ══════════════════════════════════════════════════
+     SCREEN 4 — NEW TASK (Manus-style home)
+══════════════════════════════════════════════════════ -->
+<div id="s-newtask" class="screen hidden">
+
+  <!-- MANUS SIDEBAR -->
+  <div class="ms">
+    <div class="ms-header">
+      <svg width="22" height="17" fill="#111" style="flex-shrink:0"><use href="#i-logo"/></svg>
+      <span class="ms-wordmark">manus</span>
+      <button class="ms-icon-btn" onclick="showScreen('s-chat')">
+        <svg><use href="#icon-Sidebar"/></svg>
+      </button>
+    </div>
+
+    <div class="ms-nav">
+      <button class="ms-nav-item active">
+        <svg><use href="#icon-ChatAdd"/></svg>新建任务
+      </button>
+      <button class="ms-nav-item">
+        <svg><use href="#icon-Agent"/></svg>Agents
+        <span class="ms-badge">新</span>
+      </button>
+      <button class="ms-nav-item">
+        <svg><use href="#icon-Search"/></svg>搜索
+      </button>
+      <button class="ms-nav-item">
+        <svg><use href="#icon-Knowledge"/></svg>库
+      </button>
+    </div>
+
+    <div class="ms-section">
+      项目
+      <span class="ms-section-add"><svg><use href="#icon-Add"/></svg></span>
+    </div>
+    <div class="ms-project">
+      <svg><use href="#icon-Folder"/></svg>体验设计
+    </div>
+
+    <div class="ms-section" style="margin-top:6px">
+      所有任务
+      <span class="ms-section-add" style="margin-left:auto"><svg><use href="#icon-Sort"/></svg></span>
+    </div>
+
+    <div class="ms-tasks">
+      <div class="ms-task">
+        <div class="ms-task-ico" style="background:#e8f4ff;color:#2563eb">✦</div>
+        <span class="ms-task-label">Manus更新日志视频如何制作</span>
+      </div>
+      <div class="ms-task">
+        <div class="ms-task-ico" style="background:#fef3c7;color:#d97706">◈</div>
+        <span class="ms-task-label">近3年AI产品设计系统及竞品汇总</span>
+      </div>
+      <div class="ms-task">
+        <div class="ms-task-ico" style="background:#fce7f3;color:#db2777">✦</div>
+        <span class="ms-task-label">中国除夕家庭春节晚会PPT设计方案</span>
+      </div>
+      <div class="ms-task">
+        <div class="ms-task-ico" style="background:#f0fdf4;color:#16a34a">◈</div>
+        <span class="ms-task-label">开发电商AI试穿App实现照片穿搭...</span>
+      </div>
+      <div class="ms-task">
+        <div class="ms-task-ico" style="background:#ede9fe;color:#7c3aed">✦</div>
+        <span class="ms-task-label">创建POIZON Design设计系统网站...</span>
+      </div>
+      <div class="ms-task">
+        <div class="ms-task-ico" style="background:#fff7ed;color:#ea580c">◈</div>
+        <span class="ms-task-label">2026年AI设计验收工具调研与优化...</span>
+      </div>
+      <div class="ms-task">
+        <div class="ms-task-ico" style="background:#e8f4ff;color:#2563eb">✦</div>
+        <span class="ms-task-label">Manus测评方法建议及报告大纲</span>
+      </div>
+      <div class="ms-task">
+        <div class="ms-task-ico" style="background:#fef3c7;color:#d97706">◈</div>
+        <span class="ms-task-label">更换场景为高级餐厅保留向日葵甜品</span>
+      </div>
+      <div class="ms-task">
+        <div class="ms-task-ico" style="background:#fce7f3;color:#db2777">✦</div>
+        <span class="ms-task-label">通用AI应用界面设计参考Manus交...</span>
+      </div>
+    </div>
+
+    <div class="ms-divider"></div>
+
+    <!-- Referral card -->
+    <div class="ms-referral">
+      <div class="ms-referral-title">与好友分享 Manus</div>
+      <div class="ms-referral-sub">各得 500 积分</div>
+    </div>
+
+    <!-- Bottom nav icons -->
+    <div class="ms-footer-nav">
+      <button class="ms-foot-btn"><svg><use href="#icon-Settings"/></svg></button>
+      <button class="ms-foot-btn"><svg><use href="#icon-Computer"/></svg></button>
+      <button class="ms-foot-btn"><svg><use href="#icon-Workspace"/></svg></button>
+      <button class="ms-foot-btn" onclick="showScreen('s-chat')"><svg><use href="#icon-Sidebar"/></svg></button>
+    </div>
+  </div>
+
+  <!-- NEW TASK MAIN -->
+  <div class="nt-main">
+
+    <!-- Top-right plan bar -->
+    <div class="nt-topbar">
+      <span class="nt-plan-pill">免费计划</span>
+      <button class="nt-trial-btn">开始免费试用</button>
+    </div>
+
+    <!-- Center content -->
+    <div class="nt-center">
+      <div class="nt-greeting">我能为你做什么？</div>
+
+      <!-- Large input card -->
+      <div class="nt-input-card">
+        <textarea class="nt-ta" id="nt-ta" rows="2"
+          placeholder="分配一个任务或提问任何问题"
+          onkeydown="ntKey(event)"></textarea>
+        <div class="nt-toolbar">
+          <button class="nt-tool-btn"><svg><use href="#icon-Add"/></svg></button>
+          <button class="nt-tool-btn" title="工具">
+            <svg><use href="#icon-Tool"/></svg>
+          </button>
+          <button class="nt-tool-btn" title="连接器">
+            <svg><use href="#icon-Connectors"/></svg>
+          </button>
+          <div class="nt-spacer"></div>
+          <button class="nt-tool-btn" title="表情"><svg><use href="#icon-Feedback"/></svg></button>
+          <button class="nt-tool-btn" title="语音"><svg><use href="#icon-Voice"/></svg></button>
+          <button class="nt-send" onclick="ntSend()" title="发送">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
+                 style="width:16px;height:16px">
+              <path d="M10 3L10 17M10 3L5 8M10 3L15 8"
+                    stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tool connect strip -->
+      <div class="nt-tool-connect">
+        <svg width="14" height="14" style="color:#888;flex-shrink:0"><use href="#icon-Connectors"/></svg>
+        将您的工具连接到 Manus
+        <div class="nt-connect-icons">
+          <div class="nt-connect-icon" style="background:#0088cc;color:#fff;font-size:13px">✈</div>
+          <div class="nt-connect-icon" style="background:#0866ff;color:#fff;font-size:13px">f</div>
+          <div class="nt-connect-icon" style="background:#25d366;color:#fff;font-size:13px">w</div>
+          <div class="nt-connect-icon" style="background:#e01e5a;color:#fff;font-size:10px">S</div>
+          <div class="nt-connect-icon" style="background:#111;color:#fff;font-size:11px">gh</div>
+          <div class="nt-connect-icon" style="background:#0a66c2;color:#fff;font-size:10px">in</div>
+        </div>
+        <div class="nt-connect-close">
+          <svg><use href="#icon-X"/></svg>
+        </div>
+      </div>
+
+      <!-- Quick action chips -->
+      <div class="nt-chips">
+        <button class="nt-chip" onclick="ntChip('帮我制作一份幻灯片')">
+          <svg><use href="#icon-Slides"/></svg>制作幻灯片
+        </button>
+        <button class="nt-chip" onclick="ntChip('帮我创建一个网站')">
+          <svg><use href="#icon-Globe"/></svg>创建网站
+        </button>
+        <button class="nt-chip" onclick="ntChip('帮我开发一个应用')">
+          <svg><use href="#icon-Code"/></svg>开发应用
+        </button>
+        <button class="nt-chip" onclick="ntChip('帮我做一个设计方案')">
+          <svg><use href="#icon-Edit"/></svg>设计
+        </button>
+        <button class="nt-chip">
+          <svg><use href="#icon-DotsHorizontal"/></svg>更多
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
