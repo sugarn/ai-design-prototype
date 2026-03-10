@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>组件命名规范报告 · 已修正版 · AI设计语言试点</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-family-base);
+      background: var(--color-bg-page);
+      color: var(--color-text-primary);
+      padding: var(--spacing-8) var(--spacing-7);
+    }
+    .page-header { max-width: 960px; margin: 0 auto var(--spacing-8); }
+    .page-title {
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wide);
+      margin-bottom: var(--spacing-2);
+    }
+    .page-subtitle { font-size: var(--font-size-md); color: var(--color-text-secondary); }
+    .meta-row { display: flex; gap: var(--spacing-3); flex-wrap: wrap; margin-top: var(--spacing-4); }
+    .meta-chip {
+      display: inline-flex; align-items: center; gap: var(--spacing-2);
+      padding: 2px var(--spacing-3);
+      background: var(--color-bg-subtle);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-base);
+      color: var(--color-text-secondary);
+    }
+    .main { max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--spacing-7); }
+
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-5); }
+    .stat-card {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-6);
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-value { font-size: var(--font-size-hero); font-weight: var(--font-weight-semibold); line-height: 1; margin-bottom: var(--spacing-2); }
+    .stat-label { font-size: var(--font-size-md); color: var(--color-text-secondary); }
+    .stat-card.cyan   .stat-value { color: var(--color-brand-cyan); }
+    .stat-card.green  .stat-value { color: var(--color-status-success); }
+    .stat-card.yellow .stat-value { color: var(--color-status-warning); }
+    .stat-card.purple .stat-value { color: var(--color-brand-purple); }
+
+    /* Section */
+    .section-heading {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--letter-spacing-wide);
+      padding-bottom: var(--spacing-4);
+      border-bottom: 1px solid var(--color-border-default);
+      margin-bottom: var(--spacing-5);
+    }
+
+    /* Before/After table */
+    .fix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--font-size-md);
+      background: var(--color-bg-card);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-border-default);
+    }
+    .fix-table th {
+      background: var(--color-bg-subtle);
+      padding: var(--spacing-3) var(--spacing-5);
+      text-align: left;
+      font-size: var(--font-size-base);
+      color: var(--color-text-secondary);
+      font-weight: var(--font-weight-medium);
+      border-bottom: 1px solid var(--color-border-default);
+    }
+    .fix-table td {
+      padding: var(--spacing-4) var(--spacing-5);
+      border-bottom: 1px solid var(--color-border-subtler);
+      vertical-align: middle;
+    }
+    .fix-table tr:last-child td { border-bottom: none; }
+    .fix-table tr:hover td { background: var(--color-bg-subtle); }
+    .code-before {
+      display: inline-block;
+      padding: 2px 8px;
+      background: rgba(248,113,113,.1);
+      color: var(--color-status-error);
+      border-radius: var(--radius-sm);
+      font-family: monospace;
+      font-size: var(--font-size-base);
+      text-decoration: line-through;
+      text-decoration-color: rgba(248,113,113,.6);
+    }
+    .code-after {
+      display: inline-block;
+      padding: 2px 8px;
+      background: rgba(34,197,94,.1);
+      color: var(--color-status-success);
+      border-radius: var(--radius-sm);
+      font-family: monospace;
+      font-size: var(--font-size-base);
+    }
+    .arrow { color: var(--color-text-tertiary); padding: 0 var(--spacing-3); }
+    .type-badge {
+      display: inline-flex; align-items: center;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-medium);
+    }
+    .type-badge.set { background: rgba(58,200,219,.1); color: var(--color-brand-cyan); border: 1px solid rgba(58,200,219,.2); }
+    .type-badge.comp { background: rgba(85,100,238,.1); color: var(--color-brand-purple); border: 1px solid rgba(85,100,238,.2); }
+
+    /* Acknowledged */
+    .ack-card {
+      background: rgba(251,191,36,.05);
+      border: 1px solid rgba(251,191,36,.25);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-6);
+    }
+    .ack-title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); color: var(--color-status-warning); margin-bottom: var(--spacing-4); }
+    .ack-item {
+      display: flex; align-items: flex-start; gap: var(--spacing-4);
+      padding: var(--spacing-4) 0;
+      border-bottom: 1px solid rgba(251,191,36,.15);
+    }
+    .ack-item:last-child { border-bottom: none; }
+    .ack-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-status-warning); margin-top: 6px; flex-shrink: 0; }
+    .ack-name { font-weight: var(--font-weight-medium); margin-bottom: 2px; }
+    .ack-note { font-size: var(--font-size-base); color: var(--color-text-secondary); }
+
+    /* Inventory table */
+    .inv-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--font-size-md);
+      background: var(--color-bg-card);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-border-default);
+    }
+    .inv-table th {
+      background: var(--color-bg-subtle);
+      padding: var(--spacing-3) var(--spacing-5);
+      text-align: left;
+      font-size: var(--font-size-base);
+      color: var(--color-text-secondary);
+      font-weight: var(--font-weight-medium);
+      border-bottom: 1px solid var(--color-border-default);
+    }
+    .inv-table td {
+      padding: var(--spacing-4) var(--spacing-5);
+      border-bottom: 1px solid var(--color-border-subtler);
+      vertical-align: middle;
+    }
+    .inv-table tr:last-child td { border-bottom: none; }
+    .inv-table tr:hover td { background: var(--color-bg-subtle); }
+    .prop-chip {
+      display: inline-block;
+      padding: 2px 8px;
+      background: var(--color-bg-inset);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+      margin: 2px;
+    }
+    .fixed-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px;
+      background: rgba(34,197,94,.1);
+      color: var(--color-status-success);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-medium);
+      margin-left: var(--spacing-2);
+    }
+    .report-footer {
+      border-top: 1px solid var(--color-border-default);
+      padding-top: var(--spacing-5);
+      text-align: center;
+      font-size: var(--font-size-base);
+      color: var(--color-text-tertiary);
+    }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1 class="page-title">组件命名规范报告 · 已修正版</h1>
+  <p class="page-subtitle">AI设计语言试点 · 组件库命名审计 · 全部可修正项已自动应用</p>
+  <div class="meta-row">
+    <span class="meta-chip">Figma 文件 FjnrmNXRza2atj2WvpbHMl</span>
+    <span class="meta-chip">节点 48:14698</span>
+    <span class="meta-chip">来源页面 · AI设计语言试点 · Page 13</span>
+    <span class="meta-chip">修正日期 2026-03-10</span>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- Stats -->
+  <section>
+    <div class="stats-grid">
+      <div class="stat-card cyan">
+        <div class="stat-value">20</div>
+        <div class="stat-label">组件总数</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-value">11</div>
+        <div class="stat-label">已自动修正</div>
+      </div>
+      <div class="stat-card yellow">
+        <div class="stat-value">3</div>
+        <div class="stat-label">待手动处理（Figma 内编辑）</div>
+      </div>
+      <div class="stat-card purple">
+        <div class="stat-value">9</div>
+        <div class="stat-label">属性 / 变体值修正</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Name Fixes -->
+  <section>
+    <h2 class="section-heading">组件名称修正（10 项）</h2>
+    <table class="fix-table">
+      <thead>
+        <tr>
+          <th>类型</th>
+          <th>修正前</th>
+          <th></th>
+          <th>修正后</th>
+          <th>问题原因</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="type-badge set">⬡ Set</span></td>
+          <td><span class="code-before">App header</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">AppHeader</span></td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">INCONSISTENT_CASING — "header" 未大写</td>
+        </tr>
+        <tr>
+          <td><span class="type-badge comp">◈ Comp</span></td>
+          <td><span class="code-before">App name</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">AppName</span></td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">INCONSISTENT_CASING — "name" 未大写</td>
+        </tr>
+        <tr>
+          <td><span class="type-badge set">⬡ Set</span></td>
+          <td><span class="code-before">App skeleton</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">AppSkeleton</span></td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">INCONSISTENT_CASING — "skeleton" 未大写</td>
+        </tr>
+        <tr>
+          <td><span class="type-badge set">⬡ Set</span></td>
+          <td><span class="code-before">Component 2</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">TaskStatus</span></td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">GENERIC_NAME — 自动生成名称</td>
+        </tr>
+        <tr>
+          <td><span class="type-badge set">⬡ Set</span></td>
+          <td><span class="code-before">Component 3</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">CollapsibleCard</span></td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">GENERIC_NAME — 自动生成名称</td>
+        </tr>
+        <tr>
+          <td><span class="type-badge set">⬡ Set</span></td>
+          <td><span class="code-before">Icon button</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">IconButton</span></td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">INCONSISTENT_CASING — "button" 未大写</td>
+        </tr>
+        <tr>
+          <td><span class="type-badge set">⬡ Set</span></td>
+          <td><span class="code-before">Text area</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">TextArea</span></td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">INCONSISTENT_CASING — "area" 未大写</td>
+        </tr>
+        <tr>
+          <td><span class="type-badge comp">◈ Comp</span></td>
+          <td><span class="code-before">logo</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">Logo</span></td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">LOWERCASE_START</td>
+        </tr>
+        <tr>
+          <td><span class="type-badge comp">◈ Comp</span></td>
+          <td><span class="code-before">task</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">Task</span></td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">LOWERCASE_START</td>
+        </tr>
+        <tr>
+          <td><span class="type-badge set">⬡ Set</span></td>
+          <td><span class="code-before">task document</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">TaskDocument</span></td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">LOWERCASE_START · INCONSISTENT_CASING</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Property/Value Fixes -->
+  <section>
+    <h2 class="section-heading">属性名 / 变体值修正</h2>
+    <table class="fix-table">
+      <thead>
+        <tr>
+          <th>组件</th>
+          <th>类型</th>
+          <th>修正前</th>
+          <th></th>
+          <th>修正后</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">TaskStatus</td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">Property name</td>
+          <td><span class="code-before">Property 1</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">Status</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">TaskDocument</td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">Property name</td>
+          <td><span class="code-before">Property 1</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">State</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Input / AI Prompt</td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">Property name</td>
+          <td><span class="code-before">Property 1</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">State</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Input / AI Prompt</td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">Variant value</td>
+          <td><span class="code-before">默认</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">Default</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Input / AI Prompt</td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">Variant value</td>
+          <td><span class="code-before">编辑</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">Edit</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Input / AI Prompt</td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">Variant value</td>
+          <td><span class="code-before">发送</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">Send</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">TaskDocument</td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">Variant value</td>
+          <td><span class="code-before">""（空字符串）</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">None</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">CollapsibleCard</td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">Variant value</td>
+          <td><span class="code-before">true</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">True</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">CollapsibleCard</td>
+          <td style="font-size:var(--font-size-base);color:var(--color-text-secondary)">Variant value</td>
+          <td><span class="code-before">false</span></td>
+          <td class="arrow">→</td>
+          <td><span class="code-after">False</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Acknowledged Issues -->
+  <section>
+    <h2 class="section-heading">待手动处理（需在 Figma 内补全）</h2>
+    <div class="ack-card">
+      <div class="ack-title">△ 3 项结构性问题 · 命名修正无法解决</div>
+      <div class="ack-item">
+        <div class="ack-dot"></div>
+        <div>
+          <div class="ack-name">ToggleSwitch · <code style="font-size:var(--font-size-base)">Focused=Yes</code> 变体缺失</div>
+          <div class="ack-note">需要在 Figma 中手动补全 Focused=Yes 变体，无法通过命名修正自动解决</div>
+        </div>
+      </div>
+      <div class="ack-item">
+        <div class="ack-dot"></div>
+        <div>
+          <div class="ack-name">Radio · <code style="font-size:var(--font-size-base)">Focused=Yes</code> 变体缺失</div>
+          <div class="ack-note">需要在 Figma 中手动补全 Focused=Yes 变体，无法通过命名修正自动解决</div>
+        </div>
+      </div>
+      <div class="ack-item">
+        <div class="ack-dot"></div>
+        <div>
+          <div class="ack-name">Checkbox · <code style="font-size:var(--font-size-base)">Focused=Yes</code> 变体缺失</div>
+          <div class="ack-note">需要在 Figma 中手动补全 Focused=Yes 变体，无法通过命名修正自动解决</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Full Inventory -->
+  <section>
+    <h2 class="section-heading">组件清单（修正后完整版）</h2>
+    <table class="inv-table">
+      <thead>
+        <tr>
+          <th>组件名称</th>
+          <th>类型</th>
+          <th>变体数</th>
+          <th>变体属性</th>
+          <th>组件属性</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">AppHeader<span class="fixed-tag">✓ 已修正</span></td>
+          <td><span class="type-badge set">⬡ Component Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">3</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip">Accessory: Close, Expand, Meta</span></td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">AppName<span class="fixed-tag">✓ 已修正</span></td>
+          <td><span class="type-badge comp">◈ Component</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">AppSkeleton<span class="fixed-tag">✓ 已修正</span></td>
+          <td><span class="type-badge set">⬡ Component Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">2</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip">Size: Fullscreen, Inline card</span></td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Button</td>
+          <td><span class="type-badge set">⬡ Component Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">12</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip">Variant: Default, Secondary</span><span class="prop-chip">Size: Default, Small</span><span class="prop-chip">State: Default, Disabled, Focused</span></td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip">Show start icon (BOOLEAN)</span><span class="prop-chip">Start icon (INSTANCE_SWAP)</span><span class="prop-chip">End icon (INSTANCE_SWAP)</span><span class="prop-chip">Show end icon (BOOLEAN)</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Checkbox</td>
+          <td><span class="type-badge set">⬡ Component Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">8</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip">Size: Large, Small</span><span class="prop-chip">Checked: No, Yes</span><span class="prop-chip">Disabled: No, Yes</span><span class="prop-chip">Focused: No</span></td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">CollapsibleCard<span class="fixed-tag">✓ 已修正</span></td>
+          <td><span class="type-badge set">⬡ Component Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">2</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip">Collapsed: False, True</span></td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">IconButton<span class="fixed-tag">✓ 已修正</span></td>
+          <td><span class="type-badge set">⬡ Component Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">12</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip">Variant: Ghost, Secondary</span><span class="prop-chip">Size: Default, Small</span><span class="prop-chip">State: Default, Disabled, Focused</span></td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip">Icon (INSTANCE_SWAP)</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Input / AI Prompt<span class="fixed-tag">✓ 已修正</span></td>
+          <td><span class="type-badge set">⬡ Component Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">3</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip">State: Default, Edit, Send</span></td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Logo<span class="fixed-tag">✓ 已修正</span></td>
+          <td><span class="type-badge comp">◈ Component</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Logotype</td>
+          <td><span class="type-badge comp">◈ Component</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Radio</td>
+          <td><span class="type-badge set">⬡ Component Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">8</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip">Size: Large, Small</span><span class="prop-chip">Checked: No, Yes</span><span class="prop-chip">Disabled: No, Yes</span><span class="prop-chip">Focused: No</span></td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Response</td>
+          <td><span class="type-badge comp">◈ Component</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Task<span class="fixed-tag">✓ 已修正</span></td>
+          <td><span class="type-badge comp">◈ Component</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">TaskDocument<span class="fixed-tag">✓ 已修正</span></td>
+          <td><span class="type-badge set">⬡ Component Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">2</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip">State: Default, None</span></td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">TaskStatus<span class="fixed-tag">✓ 已修正</span></td>
+          <td><span class="type-badge set">⬡ Component Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">3</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip">Status: 失败, 完成, 工作中</span></td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">TextArea<span class="fixed-tag">✓ 已修正</span></td>
+          <td><span class="type-badge set">⬡ Component Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">3</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip">State: Default, Disabled, Focused</span></td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">TextInput</td>
+          <td><span class="type-badge set">⬡ Component Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">6</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip">Size: Default, Large</span><span class="prop-chip">State: Active, Default, Disabled</span></td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip">Dropdown (BOOLEAN)</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Thinking</td>
+          <td><span class="type-badge comp">◈ Component</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Titlebar</td>
+          <td><span class="type-badge comp">◈ Component</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">ToggleSwitch</td>
+          <td><span class="type-badge set">⬡ Component Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">8</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip">Size: Default, Small</span><span class="prop-chip">Checked: No, Yes</span><span class="prop-chip">Disabled: No, Yes</span><span class="prop-chip">Focused: No</span></td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<footer class="report-footer" style="max-width:960px;margin:var(--spacing-8) auto 0;">
+  <p>命名规范报告 · 由 Claude AI 自动审计 · 2026-03-10</p>
+  <p style="margin-top:var(--spacing-2)">
+    20 个组件 ·
+    11 项自动修正 ·
+    3 项需手动处理 ·
+    输出文件 component-library.json
+  </p>
+</footer>
+
+</body>
+</html>

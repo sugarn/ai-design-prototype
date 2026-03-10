@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>命名规范报告（已修正）· UI 组件 · 48:14894</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--font-family-base);background:var(--color-bg-page);color:var(--color-text-primary);padding:var(--spacing-8) var(--spacing-7)}
+    .wrap{max-width:960px;margin:0 auto}
+
+    /* header */
+    .page-title{font-size:var(--font-size-3xl);font-weight:var(--font-weight-semibold);letter-spacing:var(--letter-spacing-wide);margin-bottom:var(--spacing-2)}
+    .page-sub{font-size:var(--font-size-md);color:var(--color-text-secondary);margin-bottom:var(--spacing-5)}
+    .chips{display:flex;flex-wrap:wrap;gap:var(--spacing-3);margin-bottom:var(--spacing-8)}
+    .chip{padding:2px 10px;background:var(--color-bg-subtle);border:1px solid var(--color-border-default);border-radius:var(--radius-full);font-size:var(--font-size-base);color:var(--color-text-secondary)}
+
+    /* stats */
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--spacing-5);margin-bottom:var(--spacing-8)}
+    .stat{background:var(--color-bg-card);border:1px solid var(--color-border-default);border-radius:var(--radius-xl);padding:var(--spacing-6);box-shadow:var(--shadow-sm)}
+    .stat-n{font-size:var(--font-size-hero);font-weight:var(--font-weight-semibold);line-height:1;margin-bottom:var(--spacing-2)}
+    .stat-l{font-size:var(--font-size-md);color:var(--color-text-secondary)}
+    .c-cyan{color:var(--color-brand-cyan)}.c-green{color:var(--color-status-success)}
+    .c-warn{color:var(--color-status-warning)}.c-purple{color:var(--color-brand-purple)}
+
+    /* section */
+    .sec-h{font-size:var(--font-size-2xl);font-weight:var(--font-weight-semibold);letter-spacing:var(--letter-spacing-wide);padding-bottom:var(--spacing-4);border-bottom:1px solid var(--color-border-default);margin-bottom:var(--spacing-5)}
+    .section{margin-bottom:var(--spacing-8)}
+
+    /* fix table */
+    .ftable{width:100%;border-collapse:collapse;background:var(--color-bg-card);border:1px solid var(--color-border-default);border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-sm)}
+    .ftable th{background:var(--color-bg-subtle);padding:var(--spacing-3) var(--spacing-5);text-align:left;font-size:var(--font-size-base);color:var(--color-text-secondary);font-weight:var(--font-weight-medium);border-bottom:1px solid var(--color-border-default)}
+    .ftable td{padding:var(--spacing-4) var(--spacing-5);border-bottom:1px solid var(--color-border-subtler);vertical-align:middle}
+    .ftable tr:last-child td{border-bottom:none}
+    .ftable tr:hover td{background:var(--color-bg-subtle)}
+    .before{display:inline-block;padding:2px 8px;background:rgba(248,113,113,.1);color:var(--color-status-error);border-radius:var(--radius-sm);font-family:monospace;font-size:var(--font-size-base);text-decoration:line-through;text-decoration-color:rgba(248,113,113,.5)}
+    .after{display:inline-block;padding:2px 8px;background:rgba(34,197,94,.1);color:var(--color-status-success);border-radius:var(--radius-sm);font-family:monospace;font-size:var(--font-size-base)}
+    .arrow{color:var(--color-text-tertiary);padding:0 var(--spacing-3)}
+    .rule-tag{display:inline-block;padding:1px 7px;border-radius:var(--radius-sm);font-size:var(--font-size-xs);font-family:monospace;font-weight:var(--font-weight-medium)}
+    .rule-tag.error{background:rgba(248,113,113,.12);color:var(--color-status-error)}
+    .rule-tag.warning{background:rgba(251,191,36,.12);color:var(--color-status-warning)}
+    .type-badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:var(--radius-full);font-size:var(--font-size-xs);font-weight:var(--font-weight-medium)}
+    .type-set{background:rgba(58,200,219,.1);color:var(--color-brand-cyan);border:1px solid rgba(58,200,219,.2)}
+    .type-comp{background:rgba(85,100,238,.1);color:var(--color-brand-purple);border:1px solid rgba(85,100,238,.2)}
+
+    /* component cards */
+    .comp-card{background:var(--color-bg-card);border:1px solid var(--color-border-default);border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-sm);margin-bottom:var(--spacing-4)}
+    .card-header{padding:var(--spacing-4) var(--spacing-6);background:var(--color-bg-subtle);border-bottom:1px solid var(--color-border-default);display:flex;align-items:center;gap:var(--spacing-3)}
+    .card-name{font-weight:var(--font-weight-semibold);font-size:var(--font-size-lg)}
+    .card-path{font-size:var(--font-size-base);color:var(--color-text-tertiary);font-family:monospace;margin-left:auto}
+    .fix-list{list-style:none}
+    .fix-item{padding:var(--spacing-4) var(--spacing-6);border-bottom:1px solid var(--color-border-subtler);display:grid;grid-template-columns:1fr auto;gap:var(--spacing-5);align-items:center}
+    .fix-item:last-child{border-bottom:none}
+    .fix-desc{font-size:var(--font-size-md)}
+    .fix-field{font-size:var(--font-size-base);color:var(--color-text-tertiary);margin-bottom:var(--spacing-2)}
+    .fix-arrow-row{display:flex;align-items:center;gap:var(--spacing-3)}
+
+    /* inventory */
+    .inv{width:100%;border-collapse:collapse;background:var(--color-bg-card);border:1px solid var(--color-border-default);border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-sm)}
+    .inv th{background:var(--color-bg-subtle);padding:var(--spacing-3) var(--spacing-5);text-align:left;font-size:var(--font-size-base);color:var(--color-text-secondary);font-weight:var(--font-weight-medium);border-bottom:1px solid var(--color-border-default)}
+    .inv td{padding:var(--spacing-4) var(--spacing-5);border-bottom:1px solid var(--color-border-subtler);vertical-align:top}
+    .inv tr:last-child td{border-bottom:none}
+    .inv tr:hover td{background:var(--color-bg-subtle)}
+    .prop-chip{display:inline-block;padding:2px 8px;background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-full);font-size:var(--font-size-xs);color:var(--color-text-secondary);margin:2px}
+    .fixed-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:rgba(34,197,94,.1);color:var(--color-status-success);border-radius:var(--radius-full);font-size:var(--font-size-xs);font-weight:var(--font-weight-medium);margin-left:6px}
+
+    footer{border-top:1px solid var(--color-border-default);padding-top:var(--spacing-5);text-align:center;font-size:var(--font-size-base);color:var(--color-text-tertiary);margin-top:var(--spacing-8)}
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1 class="page-title">命名规范报告（已修正）</h1>
+  <p class="page-sub">AI设计语言试点 · UI 组件库 · 节点 48:14894 · 全部命名问题已自动应用修正</p>
+  <div class="chips">
+    <span class="chip">Figma 文件 · FjnrmNXRza2atj2WvpbHMl</span>
+    <span class="chip">节点 · 48:14894</span>
+    <span class="chip">UI (User Messaging & Navigation)</span>
+    <span class="chip">导出 · 2026-03-10</span>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat"><div class="stat-n c-cyan">8</div><div class="stat-l">组件总数</div></div>
+    <div class="stat"><div class="stat-n c-green">16</div><div class="stat-l">已修正项</div></div>
+    <div class="stat"><div class="stat-n c-warn">5</div><div class="stat-l">组件名修正</div></div>
+    <div class="stat"><div class="stat-n c-purple">9</div><div class="stat-l">属性 / 变体值修正</div></div>
+  </div>
+
+  <!-- Per-component fix cards -->
+  <section class="section">
+    <h2 class="sec-h">修正详情（按组件）</h2>
+
+    <div class="comp-card">
+      <div class="card-header">
+        <span class="type-badge type-set">⬡ Component Set</span>
+        <span class="card-name">CollapsibleSection</span>
+        <span class="fixed-badge">✓ 已重命名</span>
+      </div>
+      <ul class="fix-list">
+        <li class="fix-item">
+          <div class="fix-desc">
+            <div class="fix-field">组件名称 &nbsp;<span class="rule-tag error">GENERIC_NAME</span></div>
+            <div class="fix-arrow-row">
+              <span class="before">Component 3</span>
+              <span class="arrow">→</span>
+              <span class="after">CollapsibleSection</span>
+            </div>
+          </div>
+        </li>
+        <li class="fix-item">
+          <div class="fix-desc">
+            <div class="fix-field">变体值 · <code style='font-size:var(--font-size-base);color:var(--color-text-tertiary)'>Collapsed</code> &nbsp;<span class="rule-tag warning">MIXED_LANGUAGE_VARIANT</span></div>
+            <div class="fix-arrow-row">
+              <span class="before">false</span>
+              <span class="arrow">→</span>
+              <span class="after">False</span>
+            </div>
+          </div>
+        </li>
+        <li class="fix-item">
+          <div class="fix-desc">
+            <div class="fix-field">变体值 · <code style='font-size:var(--font-size-base);color:var(--color-text-tertiary)'>Collapsed</code> &nbsp;<span class="rule-tag warning">MIXED_LANGUAGE_VARIANT</span></div>
+            <div class="fix-arrow-row">
+              <span class="before">true</span>
+              <span class="arrow">→</span>
+              <span class="after">True</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="comp-card">
+      <div class="card-header">
+        <span class="type-badge type-set">⬡ Component Set</span>
+        <span class="card-name">Input / AI Prompt</span>
+        
+      </div>
+      <ul class="fix-list">
+        <li class="fix-item">
+          <div class="fix-desc">
+            <div class="fix-field">属性名 &nbsp;<span class="rule-tag error">GENERIC_PROPERTY_NAME</span></div>
+            <div class="fix-arrow-row">
+              <span class="before">Property 1</span>
+              <span class="arrow">→</span>
+              <span class="after">State</span>
+            </div>
+          </div>
+        </li>
+        <li class="fix-item">
+          <div class="fix-desc">
+            <div class="fix-field">变体值 · <code style='font-size:var(--font-size-base);color:var(--color-text-tertiary)'>State</code> &nbsp;<span class="rule-tag warning">MIXED_LANGUAGE_VARIANT</span></div>
+            <div class="fix-arrow-row">
+              <span class="before">默认</span>
+              <span class="arrow">→</span>
+              <span class="after">Default</span>
+            </div>
+          </div>
+        </li>
+        <li class="fix-item">
+          <div class="fix-desc">
+            <div class="fix-field">变体值 · <code style='font-size:var(--font-size-base);color:var(--color-text-tertiary)'>State</code> &nbsp;<span class="rule-tag warning">MIXED_LANGUAGE_VARIANT</span></div>
+            <div class="fix-arrow-row">
+              <span class="before">编辑</span>
+              <span class="arrow">→</span>
+              <span class="after">Edit</span>
+            </div>
+          </div>
+        </li>
+        <li class="fix-item">
+          <div class="fix-desc">
+            <div class="fix-field">变体值 · <code style='font-size:var(--font-size-base);color:var(--color-text-tertiary)'>State</code> &nbsp;<span class="rule-tag warning">MIXED_LANGUAGE_VARIANT</span></div>
+            <div class="fix-arrow-row">
+              <span class="before">发送</span>
+              <span class="arrow">→</span>
+              <span class="after">Send</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="comp-card">
+      <div class="card-header">
+        <span class="type-badge type-set">⬡ Component Set</span>
+        <span class="card-name">TaskStatus</span>
+        <span class="fixed-badge">✓ 已重命名</span>
+      </div>
+      <ul class="fix-list">
+        <li class="fix-item">
+          <div class="fix-desc">
+            <div class="fix-field">组件名称 &nbsp;<span class="rule-tag error">GENERIC_NAME</span></div>
+            <div class="fix-arrow-row">
+              <span class="before">Component 2</span>
+              <span class="arrow">→</span>
+              <span class="after">TaskStatus</span>
+            </div>
+          </div>
+        </li>
+        <li class="fix-item">
+          <div class="fix-desc">
+            <div class="fix-field">属性名 &nbsp;<span class="rule-tag error">GENERIC_PROPERTY_NAME</span></div>
+            <div class="fix-arrow-row">
+              <span class="before">Property 1</span>
+              <span class="arrow">→</span>
+              <span class="after">Status</span>
+            </div>
+          </div>
+        </li>
+        <li class="fix-item">
+          <div class="fix-desc">
+            <div class="fix-field">变体值 · <code style='font-size:var(--font-size-base);color:var(--color-text-tertiary)'>Status</code> &nbsp;<span class="rule-tag warning">MIXED_LANGUAGE_VARIANT</span></div>
+            <div class="fix-arrow-row">
+              <span class="before">工作中</span>
+              <span class="arrow">→</span>
+              <span class="after">Working</span>
+            </div>
+          </div>
+        </li>
+        <li class="fix-item">
+          <div class="fix-desc">
+            <div class="fix-field">变体值 · <code style='font-size:var(--font-size-base);color:var(--color-text-tertiary)'>Status</code> &nbsp;<span class="rule-tag warning">MIXED_LANGUAGE_VARIANT</span></div>
+            <div class="fix-arrow-row">
+              <span class="before">完成</span>
+              <span class="arrow">→</span>
+              <span class="after">Done</span>
+            </div>
+          </div>
+        </li>
+        <li class="fix-item">
+          <div class="fix-desc">
+            <div class="fix-field">变体值 · <code style='font-size:var(--font-size-base);color:var(--color-text-tertiary)'>Status</code> &nbsp;<span class="rule-tag warning">MIXED_LANGUAGE_VARIANT</span></div>
+            <div class="fix-arrow-row">
+              <span class="before">失败</span>
+              <span class="arrow">→</span>
+              <span class="after">Failed</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="comp-card">
+      <div class="card-header">
+        <span class="type-badge type-comp">◈ Component</span>
+        <span class="card-name">AppName</span>
+        <span class="fixed-badge">✓ 已重命名</span>
+      </div>
+      <ul class="fix-list">
+        <li class="fix-item">
+          <div class="fix-desc">
+            <div class="fix-field">组件名称 &nbsp;<span class="rule-tag warning">INCONSISTENT_CASING</span></div>
+            <div class="fix-arrow-row">
+              <span class="before">App name</span>
+              <span class="arrow">→</span>
+              <span class="after">AppName</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="comp-card">
+      <div class="card-header">
+        <span class="type-badge type-set">⬡ Component Set</span>
+        <span class="card-name">AppHeader</span>
+        <span class="fixed-badge">✓ 已重命名</span>
+      </div>
+      <ul class="fix-list">
+        <li class="fix-item">
+          <div class="fix-desc">
+            <div class="fix-field">组件名称 &nbsp;<span class="rule-tag error">GENERIC_NAME</span></div>
+            <div class="fix-arrow-row">
+              <span class="before">App header</span>
+              <span class="arrow">→</span>
+              <span class="after">AppHeader</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="comp-card">
+      <div class="card-header">
+        <span class="type-badge type-set">⬡ Component Set</span>
+        <span class="card-name">AppSkeleton</span>
+        <span class="fixed-badge">✓ 已重命名</span>
+      </div>
+      <ul class="fix-list">
+        <li class="fix-item">
+          <div class="fix-desc">
+            <div class="fix-field">组件名称 &nbsp;<span class="rule-tag error">GENERIC_NAME</span></div>
+            <div class="fix-arrow-row">
+              <span class="before">App skeleton</span>
+              <span class="arrow">→</span>
+              <span class="after">AppSkeleton</span>
+            </div>
+          </div>
+        </li>
+        <li class="fix-item">
+          <div class="fix-desc">
+            <div class="fix-field">变体值 · <code style='font-size:var(--font-size-base);color:var(--color-text-tertiary)'>Size</code> &nbsp;<span class="rule-tag warning">MIXED_LANGUAGE_VARIANT</span></div>
+            <div class="fix-arrow-row">
+              <span class="before">Inline card</span>
+              <span class="arrow">→</span>
+              <span class="after">InlineCard</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Full Inventory -->
+  <section class="section">
+    <h2 class="sec-h">组件清单（修正后完整版）</h2>
+    <table class="inv">
+      <thead>
+        <tr>
+          <th>组件名称</th>
+          <th>类型</th>
+          <th>变体数</th>
+          <th>变体属性（修正后）</th>
+          <th>实例 / 布尔属性</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">AppHeader<span class="fixed-badge">✓ 已修正</span>
+            <br><span style="font-size:var(--font-size-base);color:var(--color-text-tertiary);font-family:monospace">原：App header</span>
+          </td>
+          <td><span class="type-badge type-set">⬡ Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">3</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip"><b>Accessory</b>: Close, Expand, Meta</span></td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">AppName<span class="fixed-badge">✓ 已修正</span>
+            <br><span style="font-size:var(--font-size-base);color:var(--color-text-tertiary);font-family:monospace">原：App name</span>
+          </td>
+          <td><span class="type-badge type-comp">◈ Comp</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">AppSkeleton<span class="fixed-badge">✓ 已修正</span>
+            <br><span style="font-size:var(--font-size-base);color:var(--color-text-tertiary);font-family:monospace">原：App skeleton</span>
+          </td>
+          <td><span class="type-badge type-set">⬡ Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">2</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip"><b>Size</b>: Fullscreen, InlineCard</span></td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">CollapsibleSection<span class="fixed-badge">✓ 已修正</span>
+            <br><span style="font-size:var(--font-size-base);color:var(--color-text-tertiary);font-family:monospace">原：Component 3</span>
+          </td>
+          <td><span class="type-badge type-set">⬡ Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">2</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip"><b>Collapsed</b>: False, True</span></td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Input / AI Prompt<span class="fixed-badge">✓ 已修正</span>
+            
+          </td>
+          <td><span class="type-badge type-set">⬡ Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">3</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip"><b>State</b>: Default, Edit, Send</span></td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Response
+            
+          </td>
+          <td><span class="type-badge type-comp">◈ Comp</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">TaskStatus<span class="fixed-badge">✓ 已修正</span>
+            <br><span style="font-size:var(--font-size-base);color:var(--color-text-tertiary);font-family:monospace">原：Component 2</span>
+          </td>
+          <td><span class="type-badge type-set">⬡ Set</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">3</td>
+          <td style="font-size:var(--font-size-base)"><span class="prop-chip"><b>Status</b>: Done, Failed, Working</span></td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+        <tr>
+          <td style="font-weight:var(--font-weight-medium)">Titlebar
+            
+          </td>
+          <td><span class="type-badge type-comp">◈ Comp</span></td>
+          <td style="text-align:center;color:var(--color-text-secondary)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+          <td style="font-size:var(--font-size-base)">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+<footer>
+  <p>命名规范报告 · 节点 48:14894 · 由 Claude AI 自动审计并修正 · 2026-03-10</p>
+  <p style="margin-top:var(--spacing-2)">8 个组件 · 13 个变体 · 16 项修正 · 输出文件 ui-component-library.json</p>
+</footer>
+</body>
+</html>

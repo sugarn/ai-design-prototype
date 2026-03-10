@@ -1,0 +1,431 @@
+{
+  "$schema": "https://github.com/your-org/figma-component-audit/schema/v1",
+  "$metadata": {
+    "figmaFile": "FjnrmNXRza2atj2WvpbHMl",
+    "figmaNode": "48:14894",
+    "nodeLabel": "UI (User Messaging & Navigation)",
+    "exportedAt": "2026-03-10",
+    "source": "AI设计语言试点 · Page 13",
+    "totalComponentSets": 5,
+    "totalStandaloneComponents": 3,
+    "totalComponents": 8,
+    "totalVariants": 13,
+    "fixesApplied": 16
+  },
+  "componentSets": [
+    {
+      "id": "48:14899",
+      "originalName": "Component 3",
+      "name": "CollapsibleSection",
+      "type": "COMPONENT_SET",
+      "path": "UI/Row/Column/Component 3",
+      "variantCount": 2,
+      "variants": [
+        {
+          "id": "48:14900",
+          "originalName": "Collapsed=false",
+          "properties": {
+            "Collapsed": "False"
+          },
+          "name": "Collapsed=False"
+        },
+        {
+          "id": "48:14945",
+          "originalName": "Collapsed=true",
+          "properties": {
+            "Collapsed": "True"
+          },
+          "name": "Collapsed=True"
+        }
+      ],
+      "variantProperties": {
+        "Collapsed": [
+          "False",
+          "True"
+        ]
+      },
+      "componentProperties": {
+        "Collapsed": {
+          "type": "VARIANT",
+          "defaultValue": "false",
+          "variantOptions": [
+            "false",
+            "true"
+          ],
+          "_rawKey": "Collapsed"
+        }
+      },
+      "_fixed": true
+    },
+    {
+      "id": "48:14984",
+      "originalName": "Input / AI Prompt",
+      "name": "Input / AI Prompt",
+      "type": "COMPONENT_SET",
+      "path": "UI/Row/Frame 2087329422/Input / AI Prompt",
+      "variantCount": 3,
+      "variants": [
+        {
+          "id": "48:14985",
+          "originalName": "Property 1=默认",
+          "properties": {
+            "State": "Default"
+          },
+          "name": "State=Default"
+        },
+        {
+          "id": "48:15002",
+          "originalName": "Property 1=编辑",
+          "properties": {
+            "State": "Edit"
+          },
+          "name": "State=Edit"
+        },
+        {
+          "id": "48:15018",
+          "originalName": "Property 1=发送",
+          "properties": {
+            "State": "Send"
+          },
+          "name": "State=Send"
+        }
+      ],
+      "variantProperties": {
+        "State": [
+          "Default",
+          "Edit",
+          "Send"
+        ]
+      },
+      "componentProperties": {
+        "State": {
+          "type": "VARIANT",
+          "defaultValue": "默认",
+          "variantOptions": [
+            "发送",
+            "编辑",
+            "默认"
+          ],
+          "_rawKey": "Property 1"
+        }
+      },
+      "_fixed": true
+    },
+    {
+      "id": "48:15036",
+      "originalName": "Component 2",
+      "name": "TaskStatus",
+      "type": "COMPONENT_SET",
+      "path": "UI/Row/Frame 7/Component 2",
+      "variantCount": 3,
+      "variants": [
+        {
+          "id": "48:15037",
+          "originalName": "Property 1=工作中",
+          "properties": {
+            "Status": "Working"
+          },
+          "name": "Status=Working"
+        },
+        {
+          "id": "48:15054",
+          "originalName": "Property 1=完成",
+          "properties": {
+            "Status": "Done"
+          },
+          "name": "Status=Done"
+        },
+        {
+          "id": "48:15068",
+          "originalName": "Property 1=失败",
+          "properties": {
+            "Status": "Failed"
+          },
+          "name": "Status=Failed"
+        }
+      ],
+      "variantProperties": {
+        "Status": [
+          "Done",
+          "Failed",
+          "Working"
+        ]
+      },
+      "componentProperties": {
+        "Status": {
+          "type": "VARIANT",
+          "defaultValue": "工作中",
+          "variantOptions": [
+            "失败",
+            "完成",
+            "工作中"
+          ],
+          "_rawKey": "Property 1"
+        }
+      },
+      "_fixed": true
+    },
+    {
+      "id": "48:15109",
+      "originalName": "App header",
+      "name": "AppHeader",
+      "type": "COMPONENT_SET",
+      "path": "UI/Row/Column/Column/App header",
+      "variantCount": 3,
+      "variants": [
+        {
+          "id": "48:15110",
+          "originalName": "Accessory=Expand",
+          "properties": {
+            "Accessory": "Expand"
+          },
+          "name": "Accessory=Expand"
+        },
+        {
+          "id": "48:15114",
+          "originalName": "Accessory=Meta",
+          "properties": {
+            "Accessory": "Meta"
+          },
+          "name": "Accessory=Meta"
+        },
+        {
+          "id": "48:15118",
+          "originalName": "Accessory=Close",
+          "properties": {
+            "Accessory": "Close"
+          },
+          "name": "Accessory=Close"
+        }
+      ],
+      "variantProperties": {
+        "Accessory": [
+          "Close",
+          "Expand",
+          "Meta"
+        ]
+      },
+      "componentProperties": {
+        "Accessory": {
+          "type": "VARIANT",
+          "defaultValue": "Expand",
+          "variantOptions": [
+            "Meta",
+            "Expand",
+            "Close"
+          ],
+          "_rawKey": "Accessory"
+        }
+      },
+      "_fixed": true
+    },
+    {
+      "id": "48:15124",
+      "originalName": "App skeleton",
+      "name": "AppSkeleton",
+      "type": "COMPONENT_SET",
+      "path": "UI/Row/Column/Column/App skeleton",
+      "variantCount": 2,
+      "variants": [
+        {
+          "id": "48:15125",
+          "originalName": "Size=Inline card",
+          "properties": {
+            "Size": "InlineCard"
+          },
+          "name": "Size=InlineCard"
+        },
+        {
+          "id": "48:15130",
+          "originalName": "Size=Fullscreen",
+          "properties": {
+            "Size": "Fullscreen"
+          },
+          "name": "Size=Fullscreen"
+        }
+      ],
+      "variantProperties": {
+        "Size": [
+          "Fullscreen",
+          "InlineCard"
+        ]
+      },
+      "componentProperties": {
+        "Size": {
+          "type": "VARIANT",
+          "defaultValue": "Inline card",
+          "variantOptions": [
+            "Inline card",
+            "Fullscreen"
+          ],
+          "_rawKey": "Size"
+        }
+      },
+      "_fixed": true
+    }
+  ],
+  "standaloneComponents": [
+    {
+      "id": "48:14963",
+      "originalName": "Titlebar",
+      "name": "Titlebar",
+      "type": "COMPONENT",
+      "path": "UI/Row/Column/Frame 7/Titlebar",
+      "componentProperties": {},
+      "_fixed": false
+    },
+    {
+      "id": "48:14975",
+      "originalName": "Response",
+      "name": "Response",
+      "type": "COMPONENT",
+      "path": "UI/Row/Column/Column/Response",
+      "componentProperties": {},
+      "_fixed": false
+    },
+    {
+      "id": "48:15088",
+      "originalName": "App name",
+      "name": "AppName",
+      "type": "COMPONENT",
+      "path": "UI/Row/Column/Column/App name",
+      "componentProperties": {},
+      "_fixed": true
+    }
+  ],
+  "appliedFixes": [
+    {
+      "id": "48:14899",
+      "field": "componentName",
+      "original": "Component 3",
+      "fixed": "CollapsibleSection",
+      "rule": "GENERIC_NAME or INCONSISTENT_CASING"
+    },
+    {
+      "id": "48:14899",
+      "field": "variantValue",
+      "property": "Collapsed",
+      "original": "false",
+      "fixed": "False",
+      "rule": "MIXED_LANGUAGE_VARIANT or LOWERCASE_VARIANT_VALUE or SPACE_IN_VARIANT_VALUE"
+    },
+    {
+      "id": "48:14899",
+      "field": "variantValue",
+      "property": "Collapsed",
+      "original": "true",
+      "fixed": "True",
+      "rule": "MIXED_LANGUAGE_VARIANT or LOWERCASE_VARIANT_VALUE or SPACE_IN_VARIANT_VALUE"
+    },
+    {
+      "id": "48:14984",
+      "field": "propertyName",
+      "original": "Property 1",
+      "fixed": "State",
+      "rule": "GENERIC_PROPERTY_NAME"
+    },
+    {
+      "id": "48:14984",
+      "field": "variantValue",
+      "property": "State",
+      "original": "默认",
+      "fixed": "Default",
+      "rule": "MIXED_LANGUAGE_VARIANT or LOWERCASE_VARIANT_VALUE or SPACE_IN_VARIANT_VALUE"
+    },
+    {
+      "id": "48:14984",
+      "field": "variantValue",
+      "property": "State",
+      "original": "编辑",
+      "fixed": "Edit",
+      "rule": "MIXED_LANGUAGE_VARIANT or LOWERCASE_VARIANT_VALUE or SPACE_IN_VARIANT_VALUE"
+    },
+    {
+      "id": "48:14984",
+      "field": "variantValue",
+      "property": "State",
+      "original": "发送",
+      "fixed": "Send",
+      "rule": "MIXED_LANGUAGE_VARIANT or LOWERCASE_VARIANT_VALUE or SPACE_IN_VARIANT_VALUE"
+    },
+    {
+      "id": "48:15036",
+      "field": "componentName",
+      "original": "Component 2",
+      "fixed": "TaskStatus",
+      "rule": "GENERIC_NAME or INCONSISTENT_CASING"
+    },
+    {
+      "id": "48:15036",
+      "field": "propertyName",
+      "original": "Property 1",
+      "fixed": "Status",
+      "rule": "GENERIC_PROPERTY_NAME"
+    },
+    {
+      "id": "48:15036",
+      "field": "variantValue",
+      "property": "Status",
+      "original": "工作中",
+      "fixed": "Working",
+      "rule": "MIXED_LANGUAGE_VARIANT or LOWERCASE_VARIANT_VALUE or SPACE_IN_VARIANT_VALUE"
+    },
+    {
+      "id": "48:15036",
+      "field": "variantValue",
+      "property": "Status",
+      "original": "完成",
+      "fixed": "Done",
+      "rule": "MIXED_LANGUAGE_VARIANT or LOWERCASE_VARIANT_VALUE or SPACE_IN_VARIANT_VALUE"
+    },
+    {
+      "id": "48:15036",
+      "field": "variantValue",
+      "property": "Status",
+      "original": "失败",
+      "fixed": "Failed",
+      "rule": "MIXED_LANGUAGE_VARIANT or LOWERCASE_VARIANT_VALUE or SPACE_IN_VARIANT_VALUE"
+    },
+    {
+      "id": "48:15088",
+      "field": "componentName",
+      "original": "App name",
+      "fixed": "AppName",
+      "rule": "INCONSISTENT_CASING"
+    },
+    {
+      "id": "48:15109",
+      "field": "componentName",
+      "original": "App header",
+      "fixed": "AppHeader",
+      "rule": "GENERIC_NAME or INCONSISTENT_CASING"
+    },
+    {
+      "id": "48:15124",
+      "field": "componentName",
+      "original": "App skeleton",
+      "fixed": "AppSkeleton",
+      "rule": "GENERIC_NAME or INCONSISTENT_CASING"
+    },
+    {
+      "id": "48:15124",
+      "field": "variantValue",
+      "property": "Size",
+      "original": "Inline card",
+      "fixed": "InlineCard",
+      "rule": "MIXED_LANGUAGE_VARIANT or LOWERCASE_VARIANT_VALUE or SPACE_IN_VARIANT_VALUE"
+    }
+  ],
+  "acknowledgedIssues": [
+    {
+      "note": "以下问题已在输出 JSON 中修正，原始 Figma 文件中的命名需由设计师手动同步",
+      "items": [
+        "Component 3",
+        "Component 2",
+        "App name",
+        "App header",
+        "App skeleton"
+      ]
+    }
+  ]
+}

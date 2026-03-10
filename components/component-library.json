@@ -1,0 +1,1291 @@
+{
+  "$schema": "https://github.com/your-org/figma-component-audit/schema/v1",
+  "$metadata": {
+    "figmaFile": "FjnrmNXRza2atj2WvpbHMl",
+    "figmaNode": "48:14698",
+    "exportedAt": "2026-03-10",
+    "source": "AI设计语言试点 · Page 13",
+    "totalComponentSets": 13,
+    "totalStandaloneComponents": 7,
+    "totalIssues": 24,
+    "fixesApplied": 11,
+    "fixedAt": "2026-03-10",
+    "acknowledgedIssues": [
+      {
+        "componentName": "ToggleSwitch",
+        "rule": "MISSING_FOCUSED_YES",
+        "note": "需要在 Figma 中手动补全 Focused=Yes 变体，无法通过命名修正自动解决"
+      },
+      {
+        "componentName": "Radio",
+        "rule": "MISSING_FOCUSED_YES",
+        "note": "需要在 Figma 中手动补全 Focused=Yes 变体，无法通过命名修正自动解决"
+      },
+      {
+        "componentName": "Checkbox",
+        "rule": "MISSING_FOCUSED_YES",
+        "note": "需要在 Figma 中手动补全 Focused=Yes 变体，无法通过命名修正自动解决"
+      }
+    ]
+  },
+  "componentSets": [
+    {
+      "id": "48:14703",
+      "name": "Button",
+      "type": "COMPONENT_SET",
+      "path": "Forms/Row/Column/Button",
+      "variantCount": 12,
+      "variants": [
+        {
+          "id": "48:14704",
+          "name": "Variant=Default, Size=Default, State=Default",
+          "properties": {
+            "Variant": "Default",
+            "Size": "Default",
+            "State": "Default"
+          }
+        },
+        {
+          "id": "48:14710",
+          "name": "Variant=Secondary, Size=Default, State=Disabled",
+          "properties": {
+            "Variant": "Secondary",
+            "Size": "Default",
+            "State": "Disabled"
+          }
+        },
+        {
+          "id": "48:14716",
+          "name": "Variant=Secondary, Size=Small, State=Disabled",
+          "properties": {
+            "Variant": "Secondary",
+            "Size": "Small",
+            "State": "Disabled"
+          }
+        },
+        {
+          "id": "48:14722",
+          "name": "Variant=Secondary, Size=Default, State=Default",
+          "properties": {
+            "Variant": "Secondary",
+            "Size": "Default",
+            "State": "Default"
+          }
+        },
+        {
+          "id": "48:14728",
+          "name": "Variant=Secondary, Size=Small, State=Default",
+          "properties": {
+            "Variant": "Secondary",
+            "Size": "Small",
+            "State": "Default"
+          }
+        },
+        {
+          "id": "48:14734",
+          "name": "Variant=Default, Size=Default, State=Disabled",
+          "properties": {
+            "Variant": "Default",
+            "Size": "Default",
+            "State": "Disabled"
+          }
+        },
+        {
+          "id": "48:14740",
+          "name": "Variant=Default, Size=Small, State=Disabled",
+          "properties": {
+            "Variant": "Default",
+            "Size": "Small",
+            "State": "Disabled"
+          }
+        },
+        {
+          "id": "48:14746",
+          "name": "Variant=Default, Size=Small, State=Default",
+          "properties": {
+            "Variant": "Default",
+            "Size": "Small",
+            "State": "Default"
+          }
+        },
+        {
+          "id": "48:14752",
+          "name": "Variant=Default, Size=Default, State=Focused",
+          "properties": {
+            "Variant": "Default",
+            "Size": "Default",
+            "State": "Focused"
+          }
+        },
+        {
+          "id": "48:14758",
+          "name": "Variant=Default, Size=Small, State=Focused",
+          "properties": {
+            "Variant": "Default",
+            "Size": "Small",
+            "State": "Focused"
+          }
+        },
+        {
+          "id": "48:14764",
+          "name": "Variant=Secondary, Size=Default, State=Focused",
+          "properties": {
+            "Variant": "Secondary",
+            "Size": "Default",
+            "State": "Focused"
+          }
+        },
+        {
+          "id": "48:14770",
+          "name": "Variant=Secondary, Size=Small, State=Focused",
+          "properties": {
+            "Variant": "Secondary",
+            "Size": "Small",
+            "State": "Focused"
+          }
+        }
+      ],
+      "variantProperties": {
+        "Variant": [
+          "Default",
+          "Secondary"
+        ],
+        "Size": [
+          "Default",
+          "Small"
+        ],
+        "State": [
+          "Default",
+          "Disabled",
+          "Focused"
+        ]
+      },
+      "componentProperties": {
+        "Show start icon": {
+          "type": "BOOLEAN",
+          "defaultValue": false,
+          "variantOptions": [],
+          "_figmaRawKey": "Show start icon#4913:0"
+        },
+        "Start icon": {
+          "type": "INSTANCE_SWAP",
+          "defaultValue": "48:310",
+          "variantOptions": [],
+          "_figmaRawKey": "Start icon#4913:10"
+        },
+        "End icon": {
+          "type": "INSTANCE_SWAP",
+          "defaultValue": "48:432",
+          "variantOptions": [],
+          "_figmaRawKey": "End icon#4966:0"
+        },
+        "Show end icon": {
+          "type": "BOOLEAN",
+          "defaultValue": false,
+          "variantOptions": [],
+          "_figmaRawKey": "Show end icon#4966:25"
+        },
+        "Variant": {
+          "type": "VARIANT",
+          "defaultValue": "Default",
+          "variantOptions": [
+            "Default",
+            "Secondary"
+          ],
+          "_figmaRawKey": "Variant"
+        },
+        "Size": {
+          "type": "VARIANT",
+          "defaultValue": "Default",
+          "variantOptions": [
+            "Default",
+            "Small"
+          ],
+          "_figmaRawKey": "Size"
+        },
+        "State": {
+          "type": "VARIANT",
+          "defaultValue": "Default",
+          "variantOptions": [
+            "Default",
+            "Disabled",
+            "Focused"
+          ],
+          "_figmaRawKey": "State"
+        }
+      }
+    },
+    {
+      "id": "48:14778",
+      "name": "IconButton",
+      "type": "COMPONENT_SET",
+      "path": "Forms/Row/Column/Icon button",
+      "variantCount": 12,
+      "variants": [
+        {
+          "id": "48:14779",
+          "name": "Variant=Ghost, Size=Default, State=Default",
+          "properties": {
+            "Variant": "Ghost",
+            "Size": "Default",
+            "State": "Default"
+          }
+        },
+        {
+          "id": "48:14781",
+          "name": "Variant=Secondary, Size=Small, State=Default",
+          "properties": {
+            "Variant": "Secondary",
+            "Size": "Small",
+            "State": "Default"
+          }
+        },
+        {
+          "id": "48:14783",
+          "name": "Variant=Secondary, Size=Default, State=Default",
+          "properties": {
+            "Variant": "Secondary",
+            "Size": "Default",
+            "State": "Default"
+          }
+        },
+        {
+          "id": "48:14785",
+          "name": "Variant=Ghost, Size=Small, State=Disabled",
+          "properties": {
+            "Variant": "Ghost",
+            "Size": "Small",
+            "State": "Disabled"
+          }
+        },
+        {
+          "id": "48:14787",
+          "name": "Variant=Ghost, Size=Default, State=Disabled",
+          "properties": {
+            "Variant": "Ghost",
+            "Size": "Default",
+            "State": "Disabled"
+          }
+        },
+        {
+          "id": "48:14789",
+          "name": "Variant=Ghost, Size=Small, State=Focused",
+          "properties": {
+            "Variant": "Ghost",
+            "Size": "Small",
+            "State": "Focused"
+          }
+        },
+        {
+          "id": "48:14791",
+          "name": "Variant=Ghost, Size=Default, State=Focused",
+          "properties": {
+            "Variant": "Ghost",
+            "Size": "Default",
+            "State": "Focused"
+          }
+        },
+        {
+          "id": "48:14793",
+          "name": "Variant=Ghost, Size=Small, State=Default",
+          "properties": {
+            "Variant": "Ghost",
+            "Size": "Small",
+            "State": "Default"
+          }
+        },
+        {
+          "id": "48:14795",
+          "name": "Variant=Secondary, Size=Small, State=Disabled",
+          "properties": {
+            "Variant": "Secondary",
+            "Size": "Small",
+            "State": "Disabled"
+          }
+        },
+        {
+          "id": "48:14797",
+          "name": "Variant=Secondary, Size=Default, State=Disabled",
+          "properties": {
+            "Variant": "Secondary",
+            "Size": "Default",
+            "State": "Disabled"
+          }
+        },
+        {
+          "id": "48:14799",
+          "name": "Variant=Secondary, Size=Small, State=Focused",
+          "properties": {
+            "Variant": "Secondary",
+            "Size": "Small",
+            "State": "Focused"
+          }
+        },
+        {
+          "id": "48:14801",
+          "name": "Variant=Secondary, Size=Default, State=Focused",
+          "properties": {
+            "Variant": "Secondary",
+            "Size": "Default",
+            "State": "Focused"
+          }
+        }
+      ],
+      "variantProperties": {
+        "Variant": [
+          "Ghost",
+          "Secondary"
+        ],
+        "Size": [
+          "Default",
+          "Small"
+        ],
+        "State": [
+          "Default",
+          "Disabled",
+          "Focused"
+        ]
+      },
+      "componentProperties": {
+        "Icon": {
+          "type": "INSTANCE_SWAP",
+          "defaultValue": "1:14095",
+          "variantOptions": [],
+          "_figmaRawKey": "Icon#4929:47"
+        },
+        "Variant": {
+          "type": "VARIANT",
+          "defaultValue": "Ghost",
+          "variantOptions": [
+            "Ghost",
+            "Secondary"
+          ],
+          "_figmaRawKey": "Variant"
+        },
+        "Size": {
+          "type": "VARIANT",
+          "defaultValue": "Default",
+          "variantOptions": [
+            "Default",
+            "Small"
+          ],
+          "_figmaRawKey": "Size"
+        },
+        "State": {
+          "type": "VARIANT",
+          "defaultValue": "Default",
+          "variantOptions": [
+            "Default",
+            "Disabled",
+            "Focused"
+          ],
+          "_figmaRawKey": "State"
+        }
+      },
+      "_originalName": "Icon button",
+      "_namingFixed": true
+    },
+    {
+      "id": "48:14806",
+      "name": "ToggleSwitch",
+      "type": "COMPONENT_SET",
+      "path": "Forms/Row/Column/Column/ToggleSwitch",
+      "variantCount": 8,
+      "variants": [
+        {
+          "id": "48:14807",
+          "name": "Size=Default, Checked=No, Disabled=No, Focused=No",
+          "properties": {
+            "Size": "Default",
+            "Checked": "No",
+            "Disabled": "No",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14810",
+          "name": "Size=Small, Checked=No, Disabled=No, Focused=No",
+          "properties": {
+            "Size": "Small",
+            "Checked": "No",
+            "Disabled": "No",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14813",
+          "name": "Size=Default, Checked=Yes, Disabled=No, Focused=No",
+          "properties": {
+            "Size": "Default",
+            "Checked": "Yes",
+            "Disabled": "No",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14816",
+          "name": "Size=Small, Checked=Yes, Disabled=No, Focused=No",
+          "properties": {
+            "Size": "Small",
+            "Checked": "Yes",
+            "Disabled": "No",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14819",
+          "name": "Size=Default, Checked=No, Disabled=Yes, Focused=No",
+          "properties": {
+            "Size": "Default",
+            "Checked": "No",
+            "Disabled": "Yes",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14822",
+          "name": "Size=Small, Checked=No, Disabled=Yes, Focused=No",
+          "properties": {
+            "Size": "Small",
+            "Checked": "No",
+            "Disabled": "Yes",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14825",
+          "name": "Size=Default, Checked=Yes, Disabled=Yes, Focused=No",
+          "properties": {
+            "Size": "Default",
+            "Checked": "Yes",
+            "Disabled": "Yes",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14828",
+          "name": "Size=Small, Checked=Yes, Disabled=Yes, Focused=No",
+          "properties": {
+            "Size": "Small",
+            "Checked": "Yes",
+            "Disabled": "Yes",
+            "Focused": "No"
+          }
+        }
+      ],
+      "variantProperties": {
+        "Size": [
+          "Default",
+          "Small"
+        ],
+        "Checked": [
+          "No",
+          "Yes"
+        ],
+        "Disabled": [
+          "No",
+          "Yes"
+        ],
+        "Focused": [
+          "No"
+        ]
+      },
+      "componentProperties": {
+        "Size": {
+          "type": "VARIANT",
+          "defaultValue": "Default",
+          "variantOptions": [
+            "Default",
+            "Small"
+          ],
+          "_figmaRawKey": "Size"
+        },
+        "Checked": {
+          "type": "VARIANT",
+          "defaultValue": "No",
+          "variantOptions": [
+            "No",
+            "Yes"
+          ],
+          "_figmaRawKey": "Checked"
+        },
+        "Disabled": {
+          "type": "VARIANT",
+          "defaultValue": "No",
+          "variantOptions": [
+            "No",
+            "Yes"
+          ],
+          "_figmaRawKey": "Disabled"
+        },
+        "Focused": {
+          "type": "VARIANT",
+          "defaultValue": "No",
+          "variantOptions": [
+            "No"
+          ],
+          "_figmaRawKey": "Focused"
+        }
+      }
+    },
+    {
+      "id": "48:14834",
+      "name": "Radio",
+      "type": "COMPONENT_SET",
+      "path": "Forms/Row/Column/Column/Radio",
+      "variantCount": 8,
+      "variants": [
+        {
+          "id": "48:14835",
+          "name": "Size=Large, Checked=No, Disabled=No, Focused=No",
+          "properties": {
+            "Size": "Large",
+            "Checked": "No",
+            "Disabled": "No",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14836",
+          "name": "Size=Small, Checked=Yes, Disabled=No, Focused=No",
+          "properties": {
+            "Size": "Small",
+            "Checked": "Yes",
+            "Disabled": "No",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14838",
+          "name": "Size=Small, Checked=No, Disabled=No, Focused=No",
+          "properties": {
+            "Size": "Small",
+            "Checked": "No",
+            "Disabled": "No",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14839",
+          "name": "Size=Large, Checked=Yes, Disabled=No, Focused=No",
+          "properties": {
+            "Size": "Large",
+            "Checked": "Yes",
+            "Disabled": "No",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14841",
+          "name": "Size=Large, Checked=No, Disabled=Yes, Focused=No",
+          "properties": {
+            "Size": "Large",
+            "Checked": "No",
+            "Disabled": "Yes",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14842",
+          "name": "Size=Small, Checked=No, Disabled=Yes, Focused=No",
+          "properties": {
+            "Size": "Small",
+            "Checked": "No",
+            "Disabled": "Yes",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14843",
+          "name": "Size=Small, Checked=Yes, Disabled=Yes, Focused=No",
+          "properties": {
+            "Size": "Small",
+            "Checked": "Yes",
+            "Disabled": "Yes",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14845",
+          "name": "Size=Large, Checked=Yes, Disabled=Yes, Focused=No",
+          "properties": {
+            "Size": "Large",
+            "Checked": "Yes",
+            "Disabled": "Yes",
+            "Focused": "No"
+          }
+        }
+      ],
+      "variantProperties": {
+        "Size": [
+          "Large",
+          "Small"
+        ],
+        "Checked": [
+          "No",
+          "Yes"
+        ],
+        "Disabled": [
+          "No",
+          "Yes"
+        ],
+        "Focused": [
+          "No"
+        ]
+      },
+      "componentProperties": {
+        "Size": {
+          "type": "VARIANT",
+          "defaultValue": "Large",
+          "variantOptions": [
+            "Large",
+            "Small"
+          ],
+          "_figmaRawKey": "Size"
+        },
+        "Checked": {
+          "type": "VARIANT",
+          "defaultValue": "No",
+          "variantOptions": [
+            "Yes",
+            "No"
+          ],
+          "_figmaRawKey": "Checked"
+        },
+        "Disabled": {
+          "type": "VARIANT",
+          "defaultValue": "No",
+          "variantOptions": [
+            "No",
+            "Yes"
+          ],
+          "_figmaRawKey": "Disabled"
+        },
+        "Focused": {
+          "type": "VARIANT",
+          "defaultValue": "No",
+          "variantOptions": [
+            "No"
+          ],
+          "_figmaRawKey": "Focused"
+        }
+      }
+    },
+    {
+      "id": "48:14850",
+      "name": "Checkbox",
+      "type": "COMPONENT_SET",
+      "path": "Forms/Row/Column/Column/Checkbox",
+      "variantCount": 8,
+      "variants": [
+        {
+          "id": "48:14851",
+          "name": "Size=Large, Checked=No, Disabled=No, Focused=No",
+          "properties": {
+            "Size": "Large",
+            "Checked": "No",
+            "Disabled": "No",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14852",
+          "name": "Size=Small, Checked=No, Disabled=No, Focused=No",
+          "properties": {
+            "Size": "Small",
+            "Checked": "No",
+            "Disabled": "No",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14853",
+          "name": "Size=Large, Checked=No, Disabled=Yes, Focused=No",
+          "properties": {
+            "Size": "Large",
+            "Checked": "No",
+            "Disabled": "Yes",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14854",
+          "name": "Size=Small, Checked=No, Disabled=Yes, Focused=No",
+          "properties": {
+            "Size": "Small",
+            "Checked": "No",
+            "Disabled": "Yes",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14855",
+          "name": "Size=Small, Checked=Yes, Disabled=No, Focused=No",
+          "properties": {
+            "Size": "Small",
+            "Checked": "Yes",
+            "Disabled": "No",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14857",
+          "name": "Size=Large, Checked=Yes, Disabled=Yes, Focused=No",
+          "properties": {
+            "Size": "Large",
+            "Checked": "Yes",
+            "Disabled": "Yes",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14859",
+          "name": "Size=Small, Checked=Yes, Disabled=Yes, Focused=No",
+          "properties": {
+            "Size": "Small",
+            "Checked": "Yes",
+            "Disabled": "Yes",
+            "Focused": "No"
+          }
+        },
+        {
+          "id": "48:14861",
+          "name": "Size=Large, Checked=Yes, Disabled=No, Focused=No",
+          "properties": {
+            "Size": "Large",
+            "Checked": "Yes",
+            "Disabled": "No",
+            "Focused": "No"
+          }
+        }
+      ],
+      "variantProperties": {
+        "Size": [
+          "Large",
+          "Small"
+        ],
+        "Checked": [
+          "No",
+          "Yes"
+        ],
+        "Disabled": [
+          "No",
+          "Yes"
+        ],
+        "Focused": [
+          "No"
+        ]
+      },
+      "componentProperties": {
+        "Size": {
+          "type": "VARIANT",
+          "defaultValue": "Large",
+          "variantOptions": [
+            "Large",
+            "Small"
+          ],
+          "_figmaRawKey": "Size"
+        },
+        "Checked": {
+          "type": "VARIANT",
+          "defaultValue": "No",
+          "variantOptions": [
+            "No",
+            "Yes"
+          ],
+          "_figmaRawKey": "Checked"
+        },
+        "Disabled": {
+          "type": "VARIANT",
+          "defaultValue": "No",
+          "variantOptions": [
+            "No",
+            "Yes"
+          ],
+          "_figmaRawKey": "Disabled"
+        },
+        "Focused": {
+          "type": "VARIANT",
+          "defaultValue": "No",
+          "variantOptions": [
+            "No"
+          ],
+          "_figmaRawKey": "Focused"
+        }
+      }
+    },
+    {
+      "id": "48:14865",
+      "name": "TextInput",
+      "type": "COMPONENT_SET",
+      "path": "Forms/Row/Column/TextInput",
+      "variantCount": 6,
+      "variants": [
+        {
+          "id": "48:14866",
+          "name": "Size=Default, State=Default",
+          "properties": {
+            "Size": "Default",
+            "State": "Default"
+          }
+        },
+        {
+          "id": "48:14869",
+          "name": "Size=Default, State=Disabled",
+          "properties": {
+            "Size": "Default",
+            "State": "Disabled"
+          }
+        },
+        {
+          "id": "48:14872",
+          "name": "Size=Large, State=Default",
+          "properties": {
+            "Size": "Large",
+            "State": "Default"
+          }
+        },
+        {
+          "id": "48:14875",
+          "name": "Size=Large, State=Disabled",
+          "properties": {
+            "Size": "Large",
+            "State": "Disabled"
+          }
+        },
+        {
+          "id": "48:14878",
+          "name": "Size=Large, State=Active",
+          "properties": {
+            "Size": "Large",
+            "State": "Active"
+          }
+        },
+        {
+          "id": "48:14881",
+          "name": "Size=Default, State=Active",
+          "properties": {
+            "Size": "Default",
+            "State": "Active"
+          }
+        }
+      ],
+      "variantProperties": {
+        "Size": [
+          "Default",
+          "Large"
+        ],
+        "State": [
+          "Active",
+          "Default",
+          "Disabled"
+        ]
+      },
+      "componentProperties": {
+        "Dropdown": {
+          "type": "BOOLEAN",
+          "defaultValue": false,
+          "variantOptions": [],
+          "_figmaRawKey": "Dropdown#5091:0"
+        },
+        "Size": {
+          "type": "VARIANT",
+          "defaultValue": "Large",
+          "variantOptions": [
+            "Default",
+            "Large"
+          ],
+          "_figmaRawKey": "Size"
+        },
+        "State": {
+          "type": "VARIANT",
+          "defaultValue": "Default",
+          "variantOptions": [
+            "Default",
+            "Active",
+            "Disabled"
+          ],
+          "_figmaRawKey": "State"
+        }
+      }
+    },
+    {
+      "id": "48:14886",
+      "name": "TextArea",
+      "type": "COMPONENT_SET",
+      "path": "Forms/Row/Column/Text area",
+      "variantCount": 3,
+      "variants": [
+        {
+          "id": "48:14887",
+          "name": "State=Default",
+          "properties": {
+            "State": "Default"
+          }
+        },
+        {
+          "id": "48:14889",
+          "name": "State=Focused",
+          "properties": {
+            "State": "Focused"
+          }
+        },
+        {
+          "id": "48:14892",
+          "name": "State=Disabled",
+          "properties": {
+            "State": "Disabled"
+          }
+        }
+      ],
+      "variantProperties": {
+        "State": [
+          "Default",
+          "Disabled",
+          "Focused"
+        ]
+      },
+      "componentProperties": {
+        "State": {
+          "type": "VARIANT",
+          "defaultValue": "Default",
+          "variantOptions": [
+            "Default",
+            "Focused",
+            "Disabled"
+          ],
+          "_figmaRawKey": "State"
+        }
+      },
+      "_originalName": "Text area",
+      "_namingFixed": true
+    },
+    {
+      "id": "48:14899",
+      "name": "CollapsibleCard",
+      "type": "COMPONENT_SET",
+      "path": "UI/Row/Column/Component 3",
+      "variantCount": 2,
+      "variants": [
+        {
+          "id": "48:14900",
+          "name": "Collapsed=false",
+          "properties": {
+            "Collapsed": "false"
+          }
+        },
+        {
+          "id": "48:14945",
+          "name": "Collapsed=true",
+          "properties": {
+            "Collapsed": "true"
+          }
+        }
+      ],
+      "variantProperties": {
+        "Collapsed": [
+          "False",
+          "True"
+        ]
+      },
+      "componentProperties": {
+        "Collapsed": {
+          "type": "VARIANT",
+          "defaultValue": "false",
+          "variantOptions": [
+            "false",
+            "true"
+          ],
+          "_figmaRawKey": "Collapsed"
+        }
+      },
+      "_originalName": "Component 3",
+      "_namingFixed": true
+    },
+    {
+      "id": "48:14984",
+      "name": "Input / AI Prompt",
+      "type": "COMPONENT_SET",
+      "path": "UI/Row/Frame 2087329422/Input / AI Prompt",
+      "variantCount": 3,
+      "variants": [
+        {
+          "id": "48:14985",
+          "name": "State=Default",
+          "properties": {
+            "State": "Default"
+          }
+        },
+        {
+          "id": "48:15002",
+          "name": "State=Edit",
+          "properties": {
+            "State": "Edit"
+          }
+        },
+        {
+          "id": "48:15018",
+          "name": "State=Send",
+          "properties": {
+            "State": "Send"
+          }
+        }
+      ],
+      "variantProperties": {
+        "State": [
+          "Default",
+          "Edit",
+          "Send"
+        ]
+      },
+      "componentProperties": {
+        "State": {
+          "type": "VARIANT",
+          "defaultValue": "默认",
+          "variantOptions": [
+            "发送",
+            "编辑",
+            "默认"
+          ],
+          "_figmaRawKey": "Property 1"
+        }
+      },
+      "_namingFixed": true
+    },
+    {
+      "id": "48:15036",
+      "name": "TaskStatus",
+      "type": "COMPONENT_SET",
+      "path": "UI/Row/Frame 7/Component 2",
+      "variantCount": 3,
+      "variants": [
+        {
+          "id": "48:15037",
+          "name": "Property 1=工作中",
+          "properties": {
+            "Property 1": "工作中"
+          }
+        },
+        {
+          "id": "48:15054",
+          "name": "Property 1=完成",
+          "properties": {
+            "Property 1": "完成"
+          }
+        },
+        {
+          "id": "48:15068",
+          "name": "Property 1=失败",
+          "properties": {
+            "Property 1": "失败"
+          }
+        }
+      ],
+      "variantProperties": {
+        "Status": [
+          "失败",
+          "完成",
+          "工作中"
+        ]
+      },
+      "componentProperties": {
+        "Status": {
+          "type": "VARIANT",
+          "defaultValue": "工作中",
+          "variantOptions": [
+            "失败",
+            "完成",
+            "工作中"
+          ],
+          "_figmaRawKey": "Property 1"
+        }
+      },
+      "_originalName": "Component 2",
+      "_namingFixed": true
+    },
+    {
+      "id": "48:15109",
+      "name": "AppHeader",
+      "type": "COMPONENT_SET",
+      "path": "UI/Row/Column/Column/App header",
+      "variantCount": 3,
+      "variants": [
+        {
+          "id": "48:15110",
+          "name": "Accessory=Expand",
+          "properties": {
+            "Accessory": "Expand"
+          }
+        },
+        {
+          "id": "48:15114",
+          "name": "Accessory=Meta",
+          "properties": {
+            "Accessory": "Meta"
+          }
+        },
+        {
+          "id": "48:15118",
+          "name": "Accessory=Close",
+          "properties": {
+            "Accessory": "Close"
+          }
+        }
+      ],
+      "variantProperties": {
+        "Accessory": [
+          "Close",
+          "Expand",
+          "Meta"
+        ]
+      },
+      "componentProperties": {
+        "Accessory": {
+          "type": "VARIANT",
+          "defaultValue": "Expand",
+          "variantOptions": [
+            "Meta",
+            "Expand",
+            "Close"
+          ],
+          "_figmaRawKey": "Accessory"
+        }
+      },
+      "_originalName": "App header",
+      "_namingFixed": true
+    },
+    {
+      "id": "48:15124",
+      "name": "AppSkeleton",
+      "type": "COMPONENT_SET",
+      "path": "UI/Row/Column/Column/App skeleton",
+      "variantCount": 2,
+      "variants": [
+        {
+          "id": "48:15125",
+          "name": "Size=Inline card",
+          "properties": {
+            "Size": "Inline card"
+          }
+        },
+        {
+          "id": "48:15130",
+          "name": "Size=Fullscreen",
+          "properties": {
+            "Size": "Fullscreen"
+          }
+        }
+      ],
+      "variantProperties": {
+        "Size": [
+          "Fullscreen",
+          "Inline card"
+        ]
+      },
+      "componentProperties": {
+        "Size": {
+          "type": "VARIANT",
+          "defaultValue": "Inline card",
+          "variantOptions": [
+            "Inline card",
+            "Fullscreen"
+          ],
+          "_figmaRawKey": "Size"
+        }
+      },
+      "_originalName": "App skeleton",
+      "_namingFixed": true
+    },
+    {
+      "id": "48:15276",
+      "name": "TaskDocument",
+      "type": "COMPONENT_SET",
+      "path": "task document",
+      "variantCount": 2,
+      "variants": [
+        {
+          "id": "48:15277",
+          "name": "State=NoneNone",
+          "properties": {
+            "State": "None"
+          }
+        },
+        {
+          "id": "48:15284",
+          "name": "State=NoneNoneDefault",
+          "properties": {
+            "State": "Default"
+          }
+        }
+      ],
+      "variantProperties": {
+        "State": [
+          "Default",
+          "None"
+        ]
+      },
+      "componentProperties": {},
+      "_originalName": "task document",
+      "_namingFixed": true
+    }
+  ],
+  "standaloneComponents": [
+    {
+      "id": "48:14963",
+      "name": "Titlebar",
+      "type": "COMPONENT",
+      "path": "UI/Row/Column/Frame 7/Titlebar",
+      "componentProperties": {}
+    },
+    {
+      "id": "48:14975",
+      "name": "Response",
+      "type": "COMPONENT",
+      "path": "UI/Row/Column/Column/Response",
+      "componentProperties": {}
+    },
+    {
+      "id": "48:15088",
+      "name": "AppName",
+      "type": "COMPONENT",
+      "path": "UI/Row/Column/Column/App name",
+      "componentProperties": {},
+      "_originalName": "App name",
+      "_namingFixed": true
+    },
+    {
+      "id": "48:15138",
+      "name": "Task",
+      "type": "COMPONENT",
+      "path": "task",
+      "componentProperties": {},
+      "_originalName": "task",
+      "_namingFixed": true
+    },
+    {
+      "id": "48:15146",
+      "name": "Logotype",
+      "type": "COMPONENT",
+      "path": "Logotype",
+      "componentProperties": {}
+    },
+    {
+      "id": "48:15207",
+      "name": "Thinking",
+      "type": "COMPONENT",
+      "path": "Thinking",
+      "componentProperties": {}
+    },
+    {
+      "id": "48:15215",
+      "name": "Logo",
+      "type": "COMPONENT",
+      "path": "logo",
+      "componentProperties": {},
+      "_originalName": "logo",
+      "_namingFixed": true
+    }
+  ],
+  "namingComplianceIssues": {},
+  "resolvedIssues": {}
+}

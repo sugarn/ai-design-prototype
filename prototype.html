@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>AI 产品原型 · 登陆 & 对话</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;font-family:var(--font-family-base)}
+button,input,textarea{font-family:inherit;outline:none;border:none;background:none}
+button{cursor:pointer}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--color-border-strong);border-radius:4px}
+
+/* ═══════════════════════════════════════════════════════════════
+   SCREENS
+═══════════════════════════════════════════════════════════════ */
+.screen{
+  position:fixed;inset:0;
+  transition:opacity .35s ease, transform .35s ease;
+  will-change:transform,opacity;
+}
+.screen.hidden{opacity:0;pointer-events:none;transform:scale(.97)}
+.screen.active{opacity:1;pointer-events:all;transform:scale(1)}
+
+/* ═══════════════════════════════════════════════════════════════
+   SCREEN 1 — LOGIN
+═══════════════════════════════════════════════════════════════ */
+#s-login{
+  background:#f9fafb;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+/* decorative blobs */
+.blob{
+  position:absolute;border-radius:50%;
+  background:radial-gradient(circle,rgba(58,200,219,.22) 0%,transparent 70%);
+  filter:blur(60px);pointer-events:none;
+}
+.blob-1{width:900px;height:900px;top:-200px;left:-200px}
+.blob-2{width:700px;height:700px;bottom:-150px;right:-100px;
+  background:radial-gradient(circle,rgba(20,21,26,.08) 0%,transparent 70%)}
+
+.login-card{
+  position:relative;z-index:1;
+  width:480px;
+  display:flex;flex-direction:column;align-items:center;gap:32px;
+}
+.login-logo{
+  width:60px;height:60px;
+  background:#fff;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 24px rgba(0,0,0,.10);
+}
+.login-logo svg{width:36px;height:28px}
+.login-heading{
+  text-align:center;
+}
+.login-heading h1{
+  font-size:32px;font-weight:600;color:#111827;
+  letter-spacing:-.5px;line-height:1.2;margin-bottom:8px;
+}
+.login-heading p{font-size:15px;color:#6b7280;line-height:1.5}
+.login-form{width:100%;display:flex;flex-direction:column;gap:12px}
+.login-divider{
+  display:flex;align-items:center;gap:12px;
+  font-size:13px;color:#9ca3af;
+}
+.login-divider::before,.login-divider::after{
+  content:'';flex:1;height:1px;background:#e5e7eb;
+}
+.btn-social{
+  width:100%;height:52px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  border:1.5px solid #e5e7eb;border-radius:12px;
+  background:#fff;font-size:15px;font-weight:500;color:#111827;
+  transition:border-color .15s,box-shadow .15s,background .15s;
+}
+.btn-social:hover{border-color:#d1d5db;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.btn-social svg{width:20px;height:20px}
+.btn-feishu{background:#fff}
+.input-field{
+  width:100%;height:52px;
+  background:#fff;border:1.5px solid #e5e7eb;border-radius:12px;
+  padding:0 16px;font-size:15px;color:#111827;
+  transition:border-color .15s,box-shadow .15s;
+}
+.input-field::placeholder{color:#9ca3af}
+.input-field:focus{border-color:#3ac8db;box-shadow:0 0 0 3px rgba(58,200,219,.12)}
+.btn-primary{
+  width:100%;height:52px;
+  background:#111827;border-radius:12px;
+  font-size:15px;font-weight:600;color:#fff;
+  transition:background .15s,transform .08s;
+}
+.btn-primary:hover{background:#1f2937}
+.btn-primary:active{transform:scale(.98)}
+.login-footer{font-size:13px;color:#9ca3af;text-align:center}
+.login-footer a{color:#3ac8db;text-decoration:none}
+.login-footer a:hover{text-decoration:underline}
+.login-terms{font-size:12px;color:#9ca3af;text-align:center;line-height:1.6}
+.login-terms a{color:#6b7280;text-decoration:underline}
+
+/* input password toggle */
+.input-wrap{position:relative}
+.input-wrap .input-field{padding-right:44px}
+.eye-btn{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  color:#9ca3af;padding:4px;border-radius:6px;
+  transition:color .15s;
+}
+.eye-btn:hover{color:#374151}
+
+/* ═══════════════════════════════════════════════════════════════
+   SCREEN 2 — CHAT
+═══════════════════════════════════════════════════════════════ */
+#s-chat{
+  background:#f3f4f6;
+  display:flex;
+}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  flex-shrink:0;
+  width:280px;
+  background:#f3f4f6;
+  display:flex;flex-direction:column;
+  border-right:1px solid #e5e7eb;
+  transition:width .25s cubic-bezier(.4,0,.2,1);
+  overflow:hidden;
+}
+.sidebar.collapsed{width:56px}
+
+/* sidebar header */
+.sidebar-header{
+  height:64px;padding:0 16px;
+  display:flex;align-items:center;
+  gap:0;
+  flex-shrink:0;
+}
+.sidebar-logo{
+  width:36px;height:36px;border-radius:10px;
+  background:#fff;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 1px 4px rgba(0,0,0,.08);flex-shrink:0;
+}
+.sidebar-logo svg{width:22px;height:17px}
+.sidebar-toggle{
+  margin-left:auto;flex-shrink:0;
+  width:28px;height:28px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  color:#9ca3af;
+  transition:background .15s,color .15s;
+}
+.sidebar.collapsed .sidebar-toggle{margin-left:0;margin-right:auto}
+.sidebar-toggle:hover{background:#e5e7eb;color:#374151}
+
+/* collapsed icon nav */
+.sidebar-icon-nav{
+  display:none;flex-direction:column;align-items:center;gap:4px;
+  padding:12px 0;flex:1;overflow-y:auto;
+}
+.sidebar.collapsed .sidebar-icon-nav{display:flex}
+.sidebar.collapsed .sidebar-content{display:none}
+.nav-icon-btn{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  color:#9ca3af;transition:background .15s,color .15s;
+  position:relative;
+}
+.nav-icon-btn:hover{background:#e5e7eb;color:#374151}
+.nav-icon-btn.active{background:#e5e7eb;color:#111827}
+.nav-icon-btn svg{width:20px;height:20px}
+/* tooltip */
+.nav-icon-btn::after{
+  content:attr(data-tip);
+  position:absolute;left:calc(100% + 8px);
+  background:#111827;color:#fff;
+  font-size:12px;padding:4px 8px;border-radius:6px;white-space:nowrap;
+  opacity:0;pointer-events:none;transition:opacity .15s;
+}
+.nav-icon-btn:hover::after{opacity:1}
+
+/* sidebar content */
+.sidebar-content{flex:1;overflow-y:auto;padding:8px 0}
+.sidebar-btn{
+  width:100%;height:36px;padding:0 16px;
+  display:flex;align-items:center;gap:10px;
+  color:#374151;font-size:14px;border-radius:8px;
+  transition:background .12s,color .12s;
+}
+.sidebar-btn:hover{background:#e9ebee;color:#111827}
+.sidebar-btn svg{width:18px;height:18px;flex-shrink:0;color:#9ca3af}
+.sidebar-btn:hover svg{color:#374151}
+
+.sidebar-section-label{
+  padding:8px 16px 4px;
+  font-size:12px;font-weight:500;color:#9ca3af;letter-spacing:.4px;
+  text-transform:uppercase;
+}
+.conv-item{
+  display:flex;align-items:center;
+  height:32px;padding:0 12px;margin:1px 8px;
+  border-radius:8px;
+  font-size:14px;color:#111827;
+  cursor:pointer;
+  transition:background .12s;
+  white-space:nowrap;overflow:hidden;
+}
+.conv-item:hover{background:#eaebee}
+.conv-item.active{background:#e5e7eb}
+.conv-item span{flex:1;overflow:hidden;text-overflow:ellipsis}
+.conv-item .conv-more{
+  flex-shrink:0;opacity:0;width:20px;height:20px;
+  border-radius:5px;display:flex;align-items:center;justify-content:center;
+  color:#9ca3af;transition:opacity .12s,background .12s;
+}
+.conv-item:hover .conv-more{opacity:1}
+.conv-item .conv-more:hover{background:#d1d5db;color:#374151}
+.conv-item .conv-more svg{width:16px;height:16px}
+
+/* sidebar footer */
+.sidebar-footer{
+  flex-shrink:0;padding:12px 16px;
+  border-top:1px solid #e5e7eb;
+  display:flex;align-items:center;gap:10px;
+}
+.avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,#3ac8db 0%,#0f9aab 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:600;color:#fff;flex-shrink:0;
+}
+.sidebar-user-name{font-size:14px;font-weight:500;color:#374151;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sidebar-user-plan{font-size:12px;color:#9ca3af}
+
+/* ── MAIN AREA ── */
+.main{flex:1;display:flex;flex-direction:column;background:#f9fafb;overflow:hidden;position:relative}
+
+/* gradient fade at top */
+.chat-top-fade{
+  position:absolute;top:0;left:0;right:0;height:80px;
+  background:linear-gradient(to bottom,#f9fafb 0%,transparent 100%);
+  z-index:10;pointer-events:none;
+}
+
+/* titlebar */
+.titlebar{
+  flex-shrink:0;height:52px;
+  display:flex;align-items:center;
+  padding:0 24px;
+  border-bottom:1px solid #e5e7eb;
+  background:#f9fafb;
+  gap:12px;z-index:20;
+}
+.model-selector{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 10px;border-radius:8px;
+  border:1px solid #e5e7eb;background:#fff;
+  font-size:14px;font-weight:500;color:#374151;
+  cursor:pointer;transition:border-color .15s,box-shadow .15s;
+  position:relative;
+}
+.model-selector:hover{border-color:#d1d5db;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.model-selector svg{width:16px;height:16px;color:#9ca3af;transition:transform .2s}
+.model-selector.open svg{transform:rotate(180deg)}
+.model-dropdown{
+  position:absolute;top:calc(100% + 6px);left:0;
+  background:#fff;border:1px solid #e5e7eb;border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.10);
+  padding:6px;min-width:220px;z-index:100;
+  opacity:0;pointer-events:none;transform:translateY(-6px);
+  transition:opacity .15s,transform .15s;
+}
+.model-dropdown.open{opacity:1;pointer-events:all;transform:translateY(0)}
+.model-option{
+  padding:9px 12px;border-radius:8px;
+  font-size:14px;color:#374151;cursor:pointer;
+  display:flex;align-items:center;gap:8px;
+  transition:background .1s;
+}
+.model-option:hover{background:#f3f4f6}
+.model-option.selected{color:#3ac8db;font-weight:500}
+.model-option.selected::before{content:'✓';color:#3ac8db;font-size:12px}
+.model-option:not(.selected)::before{content:'';display:inline-block;width:12px}
+.titlebar-spacer{flex:1}
+.titlebar-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{
+  width:32px;height:32px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  color:#9ca3af;transition:background .12s,color .12s;cursor:pointer;
+}
+.icon-btn:hover{background:#e5e7eb;color:#374151}
+.icon-btn svg{width:18px;height:18px}
+
+/* ── CHAT MESSAGES ── */
+.chat-messages{
+  flex:1;overflow-y:auto;
+  padding:80px 0 24px;
+}
+.msg-wrap{
+  max-width:780px;margin:0 auto;
+  padding:0 24px;
+  display:flex;flex-direction:column;gap:28px;
+}
+
+/* user message */
+.msg-user{display:flex;justify-content:flex-end}
+.msg-user-bubble{
+  max-width:600px;
+  background:#f3f4f6;border-radius:18px 18px 4px 18px;
+  padding:14px 18px;
+  font-size:15px;color:#111827;line-height:1.55;
+}
+
+/* ai response */
+.msg-ai{display:flex;gap:12px;align-items:flex-start}
+.ai-avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:#fff;border:1px solid #e5e7eb;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:2px;
+}
+.ai-avatar svg{width:20px;height:16px}
+.ai-body{flex:1;min-width:0}
+.ai-text{
+  font-size:15px;color:#111827;line-height:1.65;
+  margin-bottom:12px;
+}
+.ai-text p+p{margin-top:12px}
+
+/* task card */
+.task-card{
+  background:#fff;border:1px solid #e5e7eb;border-radius:14px;
+  overflow:hidden;margin-bottom:12px;
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+}
+.task-card-header{
+  padding:12px 16px;border-bottom:1px solid #f3f4f6;
+  display:flex;align-items:center;gap:10px;
+  cursor:pointer;user-select:none;
+}
+.task-card-title{font-size:14px;font-weight:500;color:#374151;flex:1}
+.task-card-caret{color:#9ca3af;transition:transform .2s}
+.task-card-caret.open{transform:rotate(180deg)}
+.task-card-caret svg{width:16px;height:16px}
+.task-card-body{
+  overflow:hidden;
+  transition:max-height .3s ease;
+}
+.task-card-body.collapsed{max-height:0}
+.task-card-body.expanded{max-height:400px}
+.task-item{
+  padding:10px 16px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid #f9fafb;
+  font-size:14px;color:#374151;
+}
+.task-item:last-child{border-bottom:none}
+.task-item.done .task-item-name{text-decoration:line-through;color:#9ca3af}
+.task-status-dot{
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+}
+.task-status-dot.done{background:#3ac8db}
+.task-status-dot.active{
+  background:#3ac8db;
+  animation:pulse-dot 1.2s ease-in-out infinite;
+}
+.task-status-dot.pending{background:#e5e7eb}
+@keyframes pulse-dot{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.5;transform:scale(.8)}
+}
+
+/* thinking row */
+.thinking-row{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 0;font-size:14px;color:#9ca3af;
+}
+.thinking-dots{display:flex;gap:4px}
+.thinking-dots span{
+  width:5px;height:5px;border-radius:50%;background:#9ca3af;
+  animation:thinking-bounce .9s ease-in-out infinite;
+}
+.thinking-dots span:nth-child(2){animation-delay:.15s}
+.thinking-dots span:nth-child(3){animation-delay:.3s}
+@keyframes thinking-bounce{
+  0%,80%,100%{transform:translateY(0);opacity:.4}
+  40%{transform:translateY(-5px);opacity:1}
+}
+
+/* ── PROGRESS BAR (agentic) ── */
+.progress-card{
+  background:#fff;border:1px solid #e5e7eb;border-radius:14px;
+  padding:14px 16px;margin-bottom:12px;
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+}
+.progress-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;
+}
+.progress-title{font-size:13px;font-weight:500;color:#374151}
+.progress-count{font-size:13px;color:#9ca3af}
+.progress-steps{display:flex;gap:8px;align-items:center}
+.progress-step{
+  display:flex;align-items:center;gap:6px;
+  font-size:13px;color:#9ca3af;
+}
+.progress-step.done{color:#3ac8db}
+.progress-step.active{color:#374151;font-weight:500}
+.progress-step svg{width:16px;height:16px}
+.progress-separator{color:#e5e7eb;font-size:14px}
+
+/* ── INPUT AREA ── */
+.input-area{
+  flex-shrink:0;
+  padding:0 24px 20px;
+}
+.input-box{
+  background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;
+  padding:14px 16px 10px;
+  transition:border-color .15s,box-shadow .15s;
+  box-shadow:0 2px 8px rgba(0,0,0,.04);
+}
+.input-box:focus-within{
+  border-color:#3ac8db;
+  box-shadow:0 0 0 3px rgba(58,200,219,.10);
+}
+.input-textarea{
+  width:100%;resize:none;
+  font-size:15px;color:#111827;line-height:1.55;
+  min-height:24px;max-height:160px;overflow-y:auto;
+  display:block;
+}
+.input-textarea::placeholder{color:#9ca3af}
+.input-actions{
+  display:flex;align-items:center;
+  margin-top:10px;gap:8px;
+}
+.input-action-btn{
+  width:30px;height:30px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  color:#9ca3af;cursor:pointer;
+  transition:background .12s,color .12s;
+}
+.input-action-btn:hover{background:#f3f4f6;color:#374151}
+.input-action-btn svg{width:17px;height:17px}
+.input-spacer{flex:1}
+.send-btn{
+  width:32px;height:32px;border-radius:9px;
+  background:#111827;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background .12s,transform .08s;
+}
+.send-btn:hover{background:#1f2937}
+.send-btn:active{transform:scale(.92)}
+.send-btn svg{width:16px;height:16px;color:#fff}
+.send-btn.disabled{background:#e5e7eb;cursor:default}
+.send-btn.disabled svg{color:#9ca3af}
+
+/* input hint */
+.input-hint{
+  text-align:center;font-size:12px;color:#d1d5db;
+  margin-top:10px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SCREEN 3 — AGENTIC / WORKING
+═══════════════════════════════════════════════════════════════ */
+#s-agent{
+  background:#f3f4f6;
+  display:flex;
+}
+
+/* agent sidebar */
+.agent-sidebar{
+  width:280px;flex-shrink:0;
+  background:#f3f4f6;border-right:1px solid #e5e7eb;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.agent-sidebar-header{
+  height:64px;padding:0 16px;
+  display:flex;align-items:center;gap:12px;flex-shrink:0;
+}
+.agent-logo-wrap{
+  display:flex;align-items:center;gap:0;flex:1;min-width:0;
+}
+.agent-logo-box{
+  width:40px;height:40px;border-radius:12px;
+  background:#fff;border:1px solid #e9ebee;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.agent-logo-box svg{width:26px;height:20px}
+.agent-logo-text{
+  flex:1;min-width:0;padding:0 10px;
+  font-size:14px;font-weight:600;color:#111827;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.agent-collapse-btn{
+  width:28px;height:28px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  color:#9ca3af;cursor:pointer;transition:background .12s,color .12s;
+}
+.agent-collapse-btn:hover{background:#e5e7eb;color:#374151}
+.agent-collapse-btn svg{width:16px;height:16px}
+
+.agent-nav{padding:8px 12px;display:flex;flex-direction:column;gap:2px}
+.agent-nav-btn{
+  height:32px;padding:0 10px;border-radius:8px;
+  display:flex;align-items:center;gap:10px;
+  font-size:14px;color:#374151;cursor:pointer;
+  transition:background .12s;
+}
+.agent-nav-btn:hover{background:#eaebee}
+.agent-nav-btn svg{width:18px;height:18px;flex-shrink:0;color:#9ca3af}
+
+.agent-proj-label{
+  padding:12px 16px 4px;
+  font-size:12px;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.agent-proj-label button{
+  color:#9ca3af;cursor:pointer;line-height:1;
+  font-size:18px;transition:color .12s;
+}
+.agent-proj-label button:hover{color:#374151}
+.agent-proj-name{
+  padding:6px 16px;font-size:14px;font-weight:500;color:#111827;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.agent-task-list{
+  flex:1;overflow-y:auto;padding:4px 0;
+}
+.agent-task-item{
+  padding:7px 16px;font-size:14px;color:#374151;
+  cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  transition:background .1s;border-radius:0;
+}
+.agent-task-item:hover{background:#eaebee}
+.agent-task-item.active{background:#e5e7eb;color:#111827;font-weight:500}
+.agent-task-section{padding:10px 16px 4px;font-size:12px;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px}
+
+/* agent main */
+.agent-main{flex:1;display:flex;flex-direction:column;background:#f9fafb;overflow:hidden;position:relative}
+
+.agent-chat-messages{flex:1;overflow-y:auto;padding:28px 0 16px}
+.agent-msg-wrap{max-width:680px;margin:0 auto;padding:0 28px;display:flex;flex-direction:column;gap:24px}
+
+/* ai response block */
+.ai-response-block{display:flex;gap:12px}
+.ai-resp-avatar{
+  width:32px;height:32px;flex-shrink:0;border-radius:50%;
+  background:#fff;border:1px solid #e5e7eb;
+  display:flex;align-items:center;justify-content:center;
+}
+.ai-resp-avatar svg{width:20px;height:16px}
+.ai-resp-body{flex:1;min-width:0}
+.ai-resp-text{font-size:15px;color:#111827;line-height:1.65;margin-bottom:10px}
+
+/* mini terminal */
+.mini-terminal{
+  background:#1a1a1a;border-radius:10px;overflow:hidden;
+  margin-top:8px;margin-bottom:10px;
+}
+.mini-terminal-bar{
+  background:#2d2d2d;height:30px;padding:0 12px;
+  display:flex;align-items:center;gap:6px;
+}
+.term-dot{width:10px;height:10px;border-radius:50%}
+.term-dot-r{background:#ff5f56}.term-dot-y{background:#ffbd2e}.term-dot-g{background:#27c93f}
+.mini-terminal-body{padding:10px 14px;font-family:'Menlo','Monaco',monospace;font-size:12px;line-height:1.6;color:#e5e7eb}
+.term-line.dim{color:#6b7280}
+.term-line.cyan{color:#3ac8db}
+.term-line.green{color:#27c93f}
+.term-cursor{display:inline-block;width:8px;height:14px;background:#3ac8db;animation:blink .8s step-end infinite;vertical-align:text-bottom}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* thinking block */
+.thinking-block{
+  display:flex;align-items:center;gap:10px;
+  font-size:14px;color:#9ca3af;
+  padding:4px 0;
+}
+.thinking-icon{
+  width:24px;height:24px;border-radius:6px;
+  background:#111827;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  gap:2px;
+}
+.thinking-icon span{
+  width:5px;height:5px;border-radius:1px;background:#3ac8db;
+  animation:thinking-bounce 1s ease infinite;
+}
+.thinking-icon span:nth-child(2){animation-delay:.15s}
+.thinking-icon span:nth-child(3){animation-delay:.3s}
+
+/* user bubble */
+.agent-user-msg{display:flex;justify-content:flex-end}
+.agent-user-bubble{
+  max-width:560px;
+  background:#f3f4f6;border-radius:18px 18px 4px 18px;
+  padding:13px 18px;font-size:15px;color:#111827;line-height:1.55;
+}
+
+/* agent input */
+.agent-input-area{flex-shrink:0;padding:0 28px 20px}
+.agent-input-box{
+  background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;
+  padding:14px 16px 10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.04);
+  transition:border-color .15s,box-shadow .15s;
+}
+.agent-input-box:focus-within{border-color:#3ac8db;box-shadow:0 0 0 3px rgba(58,200,219,.10)}
+.agent-input-textarea{
+  width:100%;resize:none;font-size:15px;color:#111827;line-height:1.55;
+  min-height:24px;max-height:120px;overflow-y:auto;
+}
+.agent-input-textarea::placeholder{color:#9ca3af}
+
+/* task tracker */
+.task-tracker{
+  background:#fff;border:1px solid #e5e7eb;border-radius:14px;
+  overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04);
+  margin-bottom:10px;
+}
+.tt-header{
+  padding:12px 16px;
+  display:flex;align-items:center;gap:12px;
+  cursor:pointer;border-bottom:1px solid #f3f4f6;
+}
+.tt-title{font-size:14px;font-weight:500;color:#374151;flex:1}
+.tt-badge{
+  font-size:12px;color:#9ca3af;
+  background:#f3f4f6;border-radius:6px;padding:2px 7px;
+}
+.tt-steps{padding:6px 8px}
+.tt-step{
+  display:flex;align-items:center;gap:10px;
+  padding:7px 8px;border-radius:8px;
+  font-size:14px;color:#374151;
+  transition:background .1s;
+}
+.tt-step:hover{background:#f9fafb}
+.tt-step.done svg{color:#3ac8db}
+.tt-step.active{color:#111827;font-weight:500}
+.tt-step.active svg{color:#3ac8db}
+.tt-step.pending svg{color:#e5e7eb}
+.tt-step-name{flex:1}
+.tt-step-sub{font-size:12px;color:#9ca3af;margin-top:2px}
+
+/* ═══════════════════════════════════════════════════════════════
+   SHARED UTILITIES
+═══════════════════════════════════════════════════════════════ */
+.flex{display:flex}.flex-1{flex:1}.items-center{align-items:center}.gap-8{gap:8px}
+.text-muted{color:#9ca3af}.text-sm{font-size:13px}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SVG ICON DEFS (inline symbols)
+═══════════════════════════════════════════════════════════════ -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <!-- logo / claude mark -->
+  <symbol id="ico-logo" viewBox="0 0 69 53">
+    <g fill="currentColor">
+      <rect x="0"  y="24" width="7" height="7" rx="1"/>
+      <rect x="9"  y="17" width="7" height="7" rx="1"/>
+      <rect x="18" y="10" width="7" height="7" rx="1"/>
+      <rect x="27" y="3"  width="7" height="7" rx="1"/>
+      <rect x="36" y="10" width="7" height="7" rx="1"/>
+      <rect x="45" y="17" width="7" height="7" rx="1"/>
+      <rect x="54" y="24" width="7" height="7" rx="1"/>
+      <rect x="9"  y="31" width="7" height="7" rx="1"/>
+      <rect x="18" y="38" width="7" height="7" rx="1"/>
+      <rect x="27" y="31" width="7" height="7" rx="1"/>
+      <rect x="45" y="31" width="7" height="7" rx="1"/>
+      <rect x="36" y="38" width="7" height="7" rx="1"/>
+    </g>
+  </symbol>
+  <!-- sidebar toggle -->
+  <symbol id="ico-sidebar" viewBox="0 0 20 20">
+    <rect x="2" y="4" width="16" height="2" rx="1" fill="currentColor"/>
+    <rect x="2" y="9" width="10" height="2" rx="1" fill="currentColor"/>
+    <rect x="2" y="14" width="16" height="2" rx="1" fill="currentColor"/>
+  </symbol>
+  <!-- new chat -->
+  <symbol id="ico-new-chat" viewBox="0 0 20 20">
+    <path fill="currentColor" d="M4 2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H7l-4 3V4a2 2 0 0 1 2-2Zm6 5v2H8v2h2v2h2v-2h2V9h-2V7h-2Z"/>
+  </symbol>
+  <!-- chats -->
+  <symbol id="ico-chats" viewBox="0 0 20 20">
+    <path fill="currentColor" d="M2 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H7.5L3 18V4Zm5 4h6v1.5H7V8Zm0 3h4v1.5H7V11Z"/>
+  </symbol>
+  <!-- projects -->
+  <symbol id="ico-projects" viewBox="0 0 20 20">
+    <path fill="currentColor" d="M3 5a2 2 0 0 1 2-2h3.17a2 2 0 0 1 1.42.59l.82.82H16a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Z"/>
+  </symbol>
+  <!-- artifacts -->
+  <symbol id="ico-artifacts" viewBox="0 0 20 20">
+    <rect x="3" y="3" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <path d="M7 7h6M7 10h6M7 13h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  </symbol>
+  <!-- code -->
+  <symbol id="ico-code" viewBox="0 0 20 20">
+    <path fill="currentColor" fill-rule="evenodd" d="M12.178 2.179a1 1 0 0 0-1.355.543l-4 10a1 1 0 0 0 1.354 1.278l4-10a1 1 0 0 0-.001-.82ZM6.707 6.293a1 1 0 0 1 0 1.414L4.414 10l2.293 2.293a1 1 0 0 1-1.414 1.414l-3-3a1 1 0 0 1 0-1.414l3-3a1 1 0 0 1 1.414 0Zm6.586 0a1 1 0 0 1 1.414 0l3 3a1 1 0 0 1 0 1.414l-3 3a1 1 0 0 1-1.414-1.414L15.586 10l-2.293-2.293a1 1 0 0 1 0-1.414Z"/>
+  </symbol>
+  <!-- caret down -->
+  <symbol id="ico-caret-down" viewBox="0 0 20 20">
+    <path fill="currentColor" d="m5 7.5 5 5 5-5H5Z"/>
+  </symbol>
+  <!-- dots vertical -->
+  <symbol id="ico-dots-v" viewBox="0 0 20 20">
+    <circle cx="10" cy="5"  r="1.5" fill="currentColor"/>
+    <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+    <circle cx="10" cy="15" r="1.5" fill="currentColor"/>
+  </symbol>
+  <!-- dots horizontal -->
+  <symbol id="ico-dots-h" viewBox="0 0 20 20">
+    <circle cx="5"  cy="10" r="1.5" fill="currentColor"/>
+    <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+    <circle cx="15" cy="10" r="1.5" fill="currentColor"/>
+  </symbol>
+  <!-- send -->
+  <symbol id="ico-send" viewBox="0 0 20 20">
+    <path fill="currentColor" d="M17.293 9.293 3.707 3.051A1 1 0 0 0 2.5 4.118v4.764a1 1 0 0 0 .882.994L11 10.75l-7.618.874A1 1 0 0 0 2.5 12.618v4.764a1 1 0 0 0 1.207.967l13.586-5.742a1 1 0 0 0 0-1.862Z"/>
+  </symbol>
+  <!-- plus -->
+  <symbol id="ico-plus" viewBox="0 0 20 20">
+    <path fill="currentColor" d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <!-- mic -->
+  <symbol id="ico-mic" viewBox="0 0 20 20">
+    <rect x="7" y="2" width="6" height="9" rx="3" fill="currentColor"/>
+    <path fill="currentColor" d="M4 10a6 6 0 0 0 12 0h-1.5a4.5 4.5 0 0 1-9 0H4Zm6 6.5v1.5H9v-1.5h1Z"/>
+  </symbol>
+  <!-- clip -->
+  <symbol id="ico-clip" viewBox="0 0 20 20">
+    <path fill="currentColor" fill-rule="evenodd" d="M13 3a4 4 0 0 1 4 4v5.5a6.5 6.5 0 0 1-13 0V6h1.5v6.5a5 5 0 0 0 10 0V7a2.5 2.5 0 0 0-5 0v6a1 1 0 1 0 2 0V7.5H14V13a2.5 2.5 0 0 1-5 0V7a4 4 0 0 1 4-4Z"/>
+  </symbol>
+  <!-- check circle -->
+  <symbol id="ico-check-circle" viewBox="0 0 20 20">
+    <circle cx="10" cy="10" r="8" fill="currentColor"/>
+    <path d="m6.5 10 2.5 2.5 4-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </symbol>
+  <!-- circle empty -->
+  <symbol id="ico-circle" viewBox="0 0 20 20">
+    <circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  </symbol>
+  <!-- search -->
+  <symbol id="ico-search" viewBox="0 0 20 20">
+    <circle cx="8.5" cy="8.5" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <path d="m13 13 3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  </symbol>
+  <!-- star -->
+  <symbol id="ico-star" viewBox="0 0 20 20">
+    <path fill="currentColor" d="M10 2 l2.39 4.85L18 7.64l-4 3.9.94 5.5L10 14.5l-4.94 2.54L6 11.54 2 7.64l5.61-.79L10 2Z"/>
+  </symbol>
+  <!-- expand left -->
+  <symbol id="ico-expand" viewBox="0 0 20 20">
+    <path fill="currentColor" d="M7 4v5.5H2V11h5V4h2l-3 3-3-3h2Zm6 12v-5.5h5V9h-5V4h-2l3-3 3 3h-2V16h-2Z"/>
+  </symbol>
+  <!-- feishu -->
+  <symbol id="ico-feishu" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="12" fill="#006EFF"/>
+    <path fill="#fff" d="M7 9.5C7 8.12 8.12 7 9.5 7S12 8.12 12 9.5 10.88 12 9.5 12 7 10.88 7 9.5Zm5 5C12 13.12 13.12 12 14.5 12S17 13.12 17 14.5 15.88 17 14.5 17 12 15.88 12 14.5Z"/>
+    <path fill="#fff" opacity=".6" d="M12 9.5C12 10.88 10.88 12 9.5 12S7 10.88 7 9.5M12 14.5C12 13.12 13.12 12 14.5 12S17 13.12 17 14.5"/>
+  </symbol>
+  <!-- google -->
+  <symbol id="ico-google" viewBox="0 0 20 20">
+    <path fill="#4285F4" d="M19.6 10.23c0-.68-.06-1.36-.17-2H10v3.8h5.4a4.63 4.63 0 0 1-2 3.04v2.52h3.24c1.9-1.75 3-4.32 3-7.36Z"/>
+    <path fill="#34A853" d="M10 20c2.7 0 4.96-.9 6.62-2.42l-3.24-2.52a6.02 6.02 0 0 1-3.38.95 6.04 6.04 0 0 1-5.66-4.18H1.02v2.6A9.99 9.99 0 0 0 10 20Z"/>
+    <path fill="#FBBC04" d="M4.34 11.83A6.02 6.02 0 0 1 4.03 10c0-.63.12-1.25.32-1.83V5.57H1.02A9.99 9.99 0 0 0 0 10c0 1.65.4 3.2 1.02 4.43l3.32-2.6Z"/>
+    <path fill="#EA4335" d="M10 3.95a5.4 5.4 0 0 1 3.82 1.5L16.7 2.6A9.6 9.6 0 0 0 10 0a9.99 9.99 0 0 0-8.98 5.57l3.32 2.6A6.04 6.04 0 0 1 10 3.95Z"/>
+  </symbol>
+  <!-- apple -->
+  <symbol id="ico-apple" viewBox="0 0 20 20">
+    <path fill="#111827" d="M14.14 10.53c0-2.12 1.73-3.14 1.81-3.19-1-1.46-2.54-1.65-3.1-1.68-1.31-.13-2.56.78-3.23.78-.67 0-1.7-.76-2.8-.74-1.44.02-2.76.84-3.5 2.13-1.5 2.58-.38 6.4 1.07 8.5.72 1.03 1.56 2.18 2.67 2.14 1.07-.04 1.48-.69 2.77-.69 1.3 0 1.66.69 2.8.67 1.15-.02 1.88-1.04 2.58-2.08a9.4 9.4 0 0 0 1.17-2.38 3.34 3.34 0 0 1-2.04-3.46ZM11.85 4.2c.6-.73.99-1.73.88-2.73-.86.04-1.89.57-2.5 1.3-.55.63-1.03 1.65-.9 2.62.96.07 1.94-.48 2.52-1.2Z"/>
+  </symbol>
+</svg>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SCREEN 1 — LOGIN
+═══════════════════════════════════════════════════════════════ -->
+<div id="s-login" class="screen active">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="login-card">
+    <div class="login-logo">
+      <svg><use href="#ico-logo"/></svg>
+    </div>
+    <div class="login-heading">
+      <h1>登录注册</h1>
+      <p>我行我上，你呢？</p>
+    </div>
+    <div class="login-form">
+      <!-- feishu -->
+      <button class="btn-social btn-feishu" onclick="goToChat()">
+        <svg width="20" height="20"><use href="#ico-feishu"/></svg>
+        飞书登陆
+      </button>
+      <div class="login-divider">Or</div>
+      <!-- email -->
+      <input id="login-user" class="input-field" type="text" placeholder="请输入用户名"
+        oninput="updateLoginBtn()" onkeydown="handleLoginKey(event)"/>
+      <!-- password -->
+      <div class="input-wrap">
+        <input id="login-pass" class="input-field" type="password" placeholder="请输入密码"
+          oninput="updateLoginBtn()" onkeydown="handleLoginKey(event)"/>
+        <button class="eye-btn" onclick="togglePassword()" tabindex="-1">
+          <svg width="18" height="18" fill="none" viewBox="0 0 20 20">
+            <path d="M2 10s3-6 8-6 8 6 8 6-3 6-8 6-8-6-8-6Z" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+      </div>
+      <button id="login-btn" class="btn-primary" onclick="goToChat()" style="opacity:.45">继续</button>
+    </div>
+    <p class="login-footer">没有账号？ <a href="#" onclick="return false">去注册 &rsaquo;</a></p>
+    <p class="login-terms">点击继续即表示你同意我们的<a href="#" onclick="return false">服务条款</a>和<a href="#" onclick="return false">隐私政策</a></p>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SCREEN 2 — CHAT
+═══════════════════════════════════════════════════════════════ -->
+<div id="s-chat" class="screen hidden">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo" style="display:flex">
+        <svg width="22" height="17" fill="#111827"><use href="#ico-logo"/></svg>
+      </div>
+      <button class="sidebar-toggle" onclick="toggleSidebar()" style="margin-left:auto" data-tip="折叠侧边栏">
+        <svg width="18" height="18"><use href="#ico-sidebar"/></svg>
+      </button>
+    </div>
+
+    <!-- collapsed icon nav -->
+    <div class="sidebar-icon-nav">
+      <button class="nav-icon-btn" onclick="toggleSidebar()" data-tip="展开侧边栏">
+        <svg><use href="#ico-sidebar"/></svg>
+      </button>
+      <div style="height:8px"></div>
+      <button class="nav-icon-btn active" data-tip="新建对话">
+        <svg><use href="#ico-new-chat"/></svg>
+      </button>
+      <button class="nav-icon-btn" data-tip="所有对话">
+        <svg><use href="#ico-chats"/></svg>
+      </button>
+      <button class="nav-icon-btn" data-tip="项目">
+        <svg><use href="#ico-projects"/></svg>
+      </button>
+      <button class="nav-icon-btn" data-tip="制品">
+        <svg><use href="#ico-artifacts"/></svg>
+      </button>
+      <button class="nav-icon-btn" data-tip="代码">
+        <svg><use href="#ico-code"/></svg>
+      </button>
+    </div>
+
+    <!-- full content -->
+    <div class="sidebar-content">
+      <button class="sidebar-btn">
+        <svg><use href="#ico-new-chat"/></svg>
+        <span>新建对话</span>
+      </button>
+      <button class="sidebar-btn">
+        <svg><use href="#ico-search"/></svg>
+        <span>搜索</span>
+      </button>
+
+      <div class="sidebar-section-label">Starred</div>
+      <div class="conv-item" onclick="switchConv(this)">
+        <span>Seasonal Produce Guide</span>
+      </div>
+      <div class="conv-item" onclick="switchConv(this)">
+        <span>Imagining Alternate Workplace...</span>
+      </div>
+
+      <div class="sidebar-section-label">Recents</div>
+      <div class="conv-item active" onclick="switchConv(this)">
+        <span>Make a Fairy Story</span>
+        <button class="conv-more" onclick="event.stopPropagation()">
+          <svg><use href="#ico-dots-h"/></svg>
+        </button>
+      </div>
+      <div class="conv-item" onclick="switchConv(this)">
+        <span>Springtime Poetry</span>
+        <button class="conv-more" onclick="event.stopPropagation()">
+          <svg><use href="#ico-dots-h"/></svg>
+        </button>
+      </div>
+      <div class="conv-item" onclick="switchConv(this)">
+        <span>Data Migration Plan</span>
+        <button class="conv-more" onclick="event.stopPropagation()">
+          <svg><use href="#ico-dots-h"/></svg>
+        </button>
+      </div>
+      <div class="conv-item" onclick="switchConv(this)">
+        <span>Creating a Lesson Plan</span>
+        <button class="conv-more" onclick="event.stopPropagation()">
+          <svg><use href="#ico-dots-h"/></svg>
+        </button>
+      </div>
+      <div class="conv-item" onclick="switchConv(this)">
+        <span>API Documentation</span>
+        <button class="conv-more" onclick="event.stopPropagation()">
+          <svg><use href="#ico-dots-h"/></svg>
+        </button>
+      </div>
+      <div class="conv-item" onclick="switchConv(this)">
+        <span>Reviewing Contract Language</span>
+        <button class="conv-more" onclick="event.stopPropagation()">
+          <svg><use href="#ico-dots-h"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="avatar">A</div>
+      <div>
+        <div class="sidebar-user-name">Anthropic User</div>
+        <div class="sidebar-user-plan" style="font-size:11px;color:#9ca3af">Pro Plan</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main" id="main-chat">
+    <div class="chat-top-fade"></div>
+
+    <!-- titlebar -->
+    <div class="titlebar">
+      <div class="model-selector" id="model-selector" onclick="toggleModelDropdown()">
+        <span id="model-name">Claude 3.7 Sonnet</span>
+        <svg width="16" height="16"><use href="#ico-caret-down"/></svg>
+        <div class="model-dropdown" id="model-dropdown">
+          <div class="model-option selected" onclick="selectModel(event,'Claude 3.7 Sonnet')">Claude 3.7 Sonnet</div>
+          <div class="model-option" onclick="selectModel(event,'Claude 3.5 Haiku')">Claude 3.5 Haiku</div>
+          <div class="model-option" onclick="selectModel(event,'Claude 3 Opus')">Claude 3 Opus</div>
+          <div class="model-option" onclick="selectModel(event,'Gemini nano pro 4.0')">Gemini nano pro 4.0</div>
+        </div>
+      </div>
+      <div class="titlebar-spacer"></div>
+      <div class="titlebar-actions">
+        <div class="icon-btn"><svg><use href="#ico-dots-v"/></svg></div>
+        <div class="avatar" style="cursor:pointer">A</div>
+      </div>
+    </div>
+
+    <!-- messages -->
+    <div class="chat-messages" id="chat-messages">
+      <div class="msg-wrap">
+
+        <!-- user -->
+        <div class="msg-user">
+          <div class="msg-user-bubble">
+            Create a sprint planning page in App for today's engineering meeting
+          </div>
+        </div>
+
+        <!-- ai response 1 -->
+        <div class="msg-ai">
+          <div class="ai-avatar">
+            <svg width="20" height="16" fill="#111827"><use href="#ico-logo"/></svg>
+          </div>
+          <div class="ai-body">
+            <div class="ai-text">
+              <p>I'll help you create a sprint planning page for today's engineering meeting. Let me set that up now.</p>
+            </div>
+            <!-- task card collapsed -->
+            <div class="task-card">
+              <div class="task-card-header" onclick="toggleTaskCard(this)">
+                <div class="task-card-title">Sprint Planning Template</div>
+                <div class="task-card-caret open">
+                  <svg><use href="#ico-caret-down"/></svg>
+                </div>
+              </div>
+              <div class="task-card-body expanded">
+                <div class="task-item done">
+                  <div class="task-status-dot done"></div>
+                  <span class="task-item-name">Create page structure</span>
+                </div>
+                <div class="task-item done">
+                  <div class="task-status-dot done"></div>
+                  <span class="task-item-name">Add sprint goal section</span>
+                </div>
+                <div class="task-item">
+                  <div class="task-status-dot active"></div>
+                  <span class="task-item-name">Generate story points table</span>
+                </div>
+                <div class="task-item">
+                  <div class="task-status-dot pending"></div>
+                  <span class="task-item-name">Add team capacity overview</span>
+                </div>
+              </div>
+            </div>
+            <div class="thinking-row">
+              <div class="thinking-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <span>构建中...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ai response 2 -->
+        <div class="msg-ai">
+          <div class="ai-avatar">
+            <svg width="20" height="16" fill="#111827"><use href="#ico-logo"/></svg>
+          </div>
+          <div class="ai-body">
+            <div class="ai-text">
+              <p>The sprint planning page has been created with all the essential sections. I've included the sprint goal, backlog items with story points, team assignments, and capacity overview.</p>
+              <p>The page is ready in your workspace. You can start the meeting directly from there!</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- input area -->
+    <div class="input-area">
+      <div class="input-box">
+        <textarea id="chat-input" class="input-textarea" rows="1"
+          placeholder="发消息给 Claude..."
+          oninput="handleInputChange(this)"
+          onkeydown="handleChatKey(event)"></textarea>
+        <div class="input-actions">
+          <div class="input-action-btn" title="附件">
+            <svg><use href="#ico-clip"/></svg>
+          </div>
+          <div class="input-action-btn" title="添加">
+            <svg><use href="#ico-plus"/></svg>
+          </div>
+          <div class="input-spacer"></div>
+          <div class="input-action-btn" title="语音输入">
+            <svg><use href="#ico-mic"/></svg>
+          </div>
+          <div class="send-btn disabled" id="send-btn" onclick="sendMessage()">
+            <svg><use href="#ico-send"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="input-hint">按 Enter 发送 · Shift+Enter 换行</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SCREEN 3 — AGENTIC WORKING
+═══════════════════════════════════════════════════════════════ -->
+<div id="s-agent" class="screen hidden">
+
+  <!-- agent sidebar -->
+  <div class="agent-sidebar">
+    <div class="agent-sidebar-header">
+      <div class="agent-logo-wrap">
+        <div class="agent-logo-box">
+          <svg width="26" height="20" fill="#111827"><use href="#ico-logo"/></svg>
+        </div>
+        <div class="agent-logo-text">Culinary Heritage</div>
+      </div>
+      <button class="agent-collapse-btn" onclick="goToChat()">
+        <svg><use href="#ico-sidebar"/></svg>
+      </button>
+    </div>
+
+    <div class="agent-nav">
+      <button class="agent-nav-btn">
+        <svg><use href="#ico-new-chat"/></svg>
+        新建项目
+      </button>
+      <button class="agent-nav-btn">
+        <svg><use href="#ico-search"/></svg>
+        搜索
+      </button>
+      <button class="agent-nav-btn">
+        <svg><use href="#ico-artifacts"/></svg>
+        资源库
+      </button>
+    </div>
+
+    <div class="agent-proj-label">
+      <span>项目</span>
+      <button>＋</button>
+    </div>
+    <div class="agent-proj-name">Culinary Heritage Preservation</div>
+
+    <div class="agent-task-section">所有任务</div>
+    <div class="agent-task-list">
+      <div class="agent-task-item" onclick="setActiveAgentTask(this)">AI - Landing</div>
+      <div class="agent-task-item" onclick="setActiveAgentTask(this)">Typo Assistance Request</div>
+      <div class="agent-task-item" onclick="setActiveAgentTask(this)">Quadratic Function Plot</div>
+      <div class="agent-task-item" onclick="setActiveAgentTask(this)">Toyota Names Poetry</div>
+      <div class="agent-task-item" onclick="setActiveAgentTask(this)">Historical Landmarks Guide</div>
+      <div class="agent-task-item" onclick="setActiveAgentTask(this)">Gourmet Food Truck Trends</div>
+      <div class="agent-task-item" onclick="setActiveAgentTask(this)">Digital Art Techniques</div>
+      <div class="agent-task-item" onclick="setActiveAgentTask(this)">Virtual Reality Experiences</div>
+      <div class="agent-task-item active" onclick="setActiveAgentTask(this)">Culinary Heritage Preservation</div>
+    </div>
+  </div>
+
+  <!-- agent main -->
+  <div class="agent-main">
+    <div class="agent-chat-messages">
+      <div class="agent-msg-wrap">
+
+        <!-- user message -->
+        <div class="agent-user-msg">
+          <div class="agent-user-bubble">
+            为一位虚构的产品设计师「Ava Lin」构建一个作品网站。目的：展示项目、设计理念和联系方式。核心功能：展示姓名、角色和标语的头部区域、项目网格（3个精选项目）、案例分析预览卡片、合作方的评价轮播图、包含联系方式和社交信息的页脚。视觉风格：简约、深色。颜色：黑色、冷色调深色调紫色和海军蓝。
+          </div>
+        </div>
+
+        <!-- AI response block 1 -->
+        <div class="ai-response-block">
+          <div class="ai-resp-avatar">
+            <svg width="20" height="16" fill="#111827"><use href="#ico-logo"/></svg>
+          </div>
+          <div class="ai-resp-body">
+            <div class="ai-resp-text">
+              好的！我将为产品设计师「Ava Lin」创建一个作品集网站。
+            </div>
+
+            <!-- task tracker -->
+            <div class="task-tracker">
+              <div class="tt-header" onclick="toggleTaskTracker(this)">
+                <div class="tt-title">实现飞书文档当中的产品需求</div>
+                <div class="tt-badge" id="tt-badge">1 / 4</div>
+                <div style="color:#9ca3af;transition:transform .2s" id="tt-caret">
+                  <svg width="16" height="16"><use href="#ico-caret-down"/></svg>
+                </div>
+              </div>
+              <div class="tt-steps" id="tt-steps">
+                <div class="tt-step done">
+                  <svg width="18" height="18" style="color:#3ac8db"><use href="#ico-check-circle"/></svg>
+                  <div><div class="tt-step-name">需求分析</div></div>
+                </div>
+                <div class="tt-step active" id="tt-step-2">
+                  <svg width="18" height="18" style="color:#3ac8db"><use href="#ico-check-circle"/></svg>
+                  <div>
+                    <div class="tt-step-name">编码实现</div>
+                    <div class="tt-step-sub" id="tt-substep">生成高质量的视觉素材</div>
+                  </div>
+                </div>
+                <div class="tt-step pending">
+                  <svg width="18" height="18" style="color:#e5e7eb"><use href="#ico-circle"/></svg>
+                  <div><div class="tt-step-name">人工审核</div></div>
+                </div>
+                <div class="tt-step pending">
+                  <svg width="18" height="18" style="color:#e5e7eb"><use href="#ico-circle"/></svg>
+                  <div><div class="tt-step-name">集成测试</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI response block 2 — thinking -->
+        <div class="ai-response-block" id="thinking-block">
+          <div class="ai-resp-avatar">
+            <svg width="20" height="16" fill="#111827"><use href="#ico-logo"/></svg>
+          </div>
+          <div class="ai-resp-body">
+            <div class="ai-resp-text">
+              我已完成设计理念的头脑风暴，并选择了<strong>新野兽派暗黑（Neo-Brutalism Dark）</strong>风格。这种风格将采用粗重的边框、不对称布局、大胆的色块和弹性动画，完美契合产品设计师的创新精神。接下来我将生成高质量的视觉素材，然后开始构建网站。
+            </div>
+
+            <!-- terminal -->
+            <div class="mini-terminal" id="mini-terminal">
+              <div class="mini-terminal-bar">
+                <div class="term-dot term-dot-r"></div>
+                <div class="term-dot term-dot-y"></div>
+                <div class="term-dot term-dot-g"></div>
+              </div>
+              <div class="mini-terminal-body" id="terminal-body">
+                <div class="term-line green">✓ 分析完成：设计风格已确定</div>
+                <div class="term-line cyan">→ 生成主视觉素材...</div>
+                <div class="term-line dim" id="term-log-1"></div>
+                <div class="term-line dim" id="term-log-2"></div>
+                <span class="term-cursor"></span>
+              </div>
+            </div>
+
+            <div class="thinking-block" id="thinking-anim">
+              <div class="thinking-icon">
+                <span></span><span></span><span></span>
+              </div>
+              <span>构建中...</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- agent input -->
+    <div class="agent-input-area">
+      <div class="agent-input-box">
+        <textarea class="agent-input-textarea" rows="1"
+          placeholder="发消息给 Claude..."
+          oninput="handleInputChange(this)"
+          onkeydown="handleAgentKey(event)"></textarea>
+        <div class="input-actions" style="margin-top:10px">
+          <div class="input-action-btn">
+            <svg><use href="#ico-plus"/></svg>
+          </div>
+          <div class="input-action-btn">
+            <svg><use href="#ico-clip"/></svg>
+          </div>
+          <div class="input-spacer"></div>
+          <div class="input-action-btn">
+            <svg><use href="#ico-mic"/></svg>
+          </div>
+          <div class="send-btn" onclick="triggerAgentNext()">
+            <svg><use href="#ico-send"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="input-hint">按 Enter 发送 · Shift+Enter 换行</div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════════════════ */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active');
+    s.classList.add('hidden');
+  });
+  const target = document.getElementById(id);
+  target.classList.remove('hidden');
+  requestAnimationFrame(() => target.classList.add('active'));
+}
+
+/* ═══════════════════════════════════════════════════════
+   LOGIN
+═══════════════════════════════════════════════════════ */
+function updateLoginBtn() {
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  const btn = document.getElementById('login-btn');
+  btn.style.opacity = (u.length > 0 && p.length > 0) ? '1' : '.45';
+}
+
+function handleLoginKey(e) {
+  if (e.key === 'Enter') goToChat();
+}
+
+function togglePassword() {
+  const inp = document.getElementById('login-pass');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+function goToChat() {
+  showScreen('s-chat');
+  setTimeout(() => document.getElementById('chat-input').focus(), 400);
+}
+
+/* ═══════════════════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════════════════ */
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('collapsed');
+}
+
+function switchConv(el) {
+  document.querySelectorAll('#sidebar .conv-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════════════
+   MODEL SELECTOR
+═══════════════════════════════════════════════════════ */
+function toggleModelDropdown() {
+  const sel = document.getElementById('model-selector');
+  const dd = document.getElementById('model-dropdown');
+  const isOpen = dd.classList.contains('open');
+  dd.classList.toggle('open', !isOpen);
+  sel.classList.toggle('open', !isOpen);
+}
+
+function selectModel(e, name) {
+  e.stopPropagation();
+  document.getElementById('model-name').textContent = name;
+  document.querySelectorAll('.model-option').forEach(o => o.classList.remove('selected'));
+  e.currentTarget.classList.add('selected');
+  document.getElementById('model-dropdown').classList.remove('open');
+  document.getElementById('model-selector').classList.remove('open');
+}
+
+document.addEventListener('click', e => {
+  const sel = document.getElementById('model-selector');
+  if (sel && !sel.contains(e.target)) {
+    document.getElementById('model-dropdown').classList.remove('open');
+    sel.classList.remove('open');
+  }
+});
+
+/* ═══════════════════════════════════════════════════════
+   TASK CARD TOGGLE
+═══════════════════════════════════════════════════════ */
+function toggleTaskCard(header) {
+  const body = header.nextElementSibling;
+  const caret = header.querySelector('.task-card-caret');
+  const isOpen = body.classList.contains('expanded');
+  body.classList.toggle('expanded', !isOpen);
+  body.classList.toggle('collapsed', isOpen);
+  caret.classList.toggle('open', !isOpen);
+}
+
+/* ═══════════════════════════════════════════════════════
+   CHAT INPUT
+═══════════════════════════════════════════════════════ */
+function handleInputChange(el) {
+  // auto-resize
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 160) + 'px';
+  // update send btn
+  const sendBtn = document.getElementById('send-btn');
+  if (sendBtn) {
+    const empty = el.value.trim() === '';
+    sendBtn.classList.toggle('disabled', empty);
+  }
+}
+
+function handleChatKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+let isWaiting = false;
+function sendMessage() {
+  if (isWaiting) return;
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+
+  // clear input
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('send-btn').classList.add('disabled');
+
+  const container = document.getElementById('chat-messages').querySelector('.msg-wrap');
+
+  // add user message
+  const userMsg = document.createElement('div');
+  userMsg.className = 'msg-user';
+  userMsg.innerHTML = `<div class="msg-user-bubble">${escHtml(text)}</div>`;
+  container.appendChild(userMsg);
+  scrollToBottom('chat-messages');
+
+  // check if should trigger agentic screen
+  if (text.length > 40) {
+    setTimeout(() => {
+      showScreen('s-agent');
+      startAgentSimulation();
+    }, 900);
+    return;
+  }
+
+  // add thinking row
+  isWaiting = true;
+  const thinkEl = document.createElement('div');
+  thinkEl.className = 'msg-ai';
+  thinkEl.innerHTML = `
+    <div class="ai-avatar"><svg width="20" height="16" fill="#111827"><use href="#ico-logo"/></svg></div>
+    <div class="ai-body">
+      <div class="thinking-row">
+        <div class="thinking-dots"><span></span><span></span><span></span></div>
+        <span>思考中...</span>
+      </div>
+    </div>`;
+  container.appendChild(thinkEl);
+  scrollToBottom('chat-messages');
+
+  // simulate response
+  const RESPONSES = [
+    '好的，我来帮你处理这个请求。这是我的分析结果，希望对你有所帮助。',
+    '明白了！我已经完成了你要求的任务，请查看上方的结果。',
+    '这是一个很好的问题。根据你的需求，我建议以下方案：首先分析现有内容，然后按照逻辑顺序重新组织，最终确保所有要点都被清楚呈现。',
+    '已完成！我已经按照你的要求进行了处理，结果如上所示。如果需要调整，请告诉我。',
+  ];
+  const respText = RESPONSES[Math.floor(Math.random() * RESPONSES.length)];
+
+  setTimeout(() => {
+    thinkEl.querySelector('.ai-body').innerHTML = `
+      <div class="ai-text"><p>${respText}</p></div>`;
+    scrollToBottom('chat-messages');
+    isWaiting = false;
+  }, 1400);
+}
+
+function scrollToBottom(id) {
+  const el = document.getElementById(id);
+  requestAnimationFrame(() => { el.scrollTop = el.scrollHeight; });
+}
+
+function escHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+          .replace(/\n/g,'<br>');
+}
+
+/* ═══════════════════════════════════════════════════════
+   TASK TRACKER
+═══════════════════════════════════════════════════════ */
+function toggleTaskTracker(header) {
+  const steps = document.getElementById('tt-steps');
+  const caret = document.getElementById('tt-caret');
+  const hidden = steps.style.display === 'none';
+  steps.style.display = hidden ? '' : 'none';
+  caret.style.transform = hidden ? '' : 'rotate(180deg)';
+}
+
+/* ═══════════════════════════════════════════════════════
+   AGENT SIMULATION
+═══════════════════════════════════════════════════════ */
+const termLogs = [
+  '正在分析设计系统...', '加载 Tailwind CSS 4.0...', '构建组件树...',
+  '生成 hero section...', '优化响应式布局...', '添加动画效果...',
+  '压缩静态资源...', '运行单元测试...', '部署预览环境...',
+];
+let termIdx = 0;
+let agentStep = 1;
+let termTimer = null;
+
+function startAgentSimulation() {
+  termIdx = 0;
+  agentStep = 1;
+  termTimer && clearInterval(termTimer);
+  document.getElementById('term-log-1').textContent = '';
+  document.getElementById('term-log-2').textContent = '';
+
+  termTimer = setInterval(() => {
+    if (termIdx < termLogs.length) {
+      const logLine = termLogs[termIdx % termLogs.length];
+      document.getElementById('term-log-1').textContent = `[${getTimestamp()}] ${logLine}`;
+      if (termIdx > 0) {
+        document.getElementById('term-log-2').textContent =
+          `[${getTimestamp()}] ${termLogs[(termIdx-1) % termLogs.length]}`;
+      }
+      termIdx++;
+
+      // advance task step
+      if (termIdx === 4) advanceTaskStep();
+      if (termIdx === 7) advanceTaskStep();
+    } else {
+      clearInterval(termTimer);
+      completeAgent();
+    }
+  }, 900);
+}
+
+function getTimestamp() {
+  return new Date().toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+}
+
+function advanceTaskStep() {
+  agentStep++;
+  const badge = document.getElementById('tt-badge');
+  if (badge) badge.textContent = `${Math.min(agentStep, 4)} / 4`;
+}
+
+function completeAgent() {
+  // hide thinking, show completion
+  const thinking = document.getElementById('thinking-anim');
+  if (thinking) {
+    thinking.innerHTML = `
+      <svg width="18" height="18" style="color:#3ac8db"><use href="#ico-check-circle"/></svg>
+      <span style="color:#374151;font-weight:500">构建完成！网站已就绪。</span>`;
+  }
+  // update tracker
+  const badge = document.getElementById('tt-badge');
+  if (badge) badge.textContent = '4 / 4';
+  document.querySelectorAll('.tt-step').forEach(s => {
+    s.classList.remove('active','pending');
+    s.classList.add('done');
+    s.querySelector('svg').style.color = '#3ac8db';
+    s.querySelector('svg use').setAttribute('href','#ico-check-circle');
+  });
+}
+
+function handleAgentKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    triggerAgentNext();
+  }
+}
+
+function triggerAgentNext() {
+  // Go back to chat on next input
+  showScreen('s-chat');
+}
+
+function setActiveAgentTask(el) {
+  document.querySelectorAll('.agent-task-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function goToChat() {
+  showScreen('s-chat');
+}
+
+/* ═══════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════ */
+// auto-resize textarea on input
+document.querySelectorAll('.input-textarea, .agent-input-textarea').forEach(ta => {
+  ta.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 160) + 'px';
+  });
+});
+</script>
+</body>
+</html>

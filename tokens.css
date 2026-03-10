@@ -1,0 +1,267 @@
+/**
+ * Design Tokens — CSS Custom Properties
+ * Sources:
+ *   · Figma · 设计语言（品牌色为点缀色存在） node:1:106
+ *   · Figma · AI-Design-System  node:254:5022  ← 颜色系统更新 2026-03-09
+ *
+ * 设计语言定位：理性 · 克制 · 未来感 · 高级灰 · AI
+ * 品牌色（青色 #3AC8DB）作为点缀色存在，非主导色
+ */
+
+:root {
+  /* ─────────────────────────────────────────────
+   * COLOR · BRAND
+   * ───────────────────────────────────────────── */
+  --color-brand-cyan:        #3AC8DB;  /* 主品牌色 · 科技青 */
+  --color-brand-cyan-deep:   #00899B;  /* 品牌深青 · 高饱和 */
+  --color-brand-cyan-muted:  #3A92B4;  /* 辅助青蓝 */
+  --color-brand-cyan-light:  #6EE0EF;  /* 品牌浅青 · 渐变终点 */
+  --color-brand-cyan-pale:   #B2F4F5;  /* 品牌极浅青 */
+  --color-brand-cyan-ice:    #CAF9FF;  /* 品牌冰青 */
+  --color-brand-cyan-tint:   #EFFBFC;  /* 品牌底色 · 极浅青背景 */
+  --color-brand-cyan-border: #01C2C3;  /* 品牌描边 */
+  --color-brand-purple:      #5564EE;  /* 辅助品牌色 · 科技紫 */
+
+  /* Brand gradients */
+  --gradient-brand-1: linear-gradient(135deg, #3AC8DB 0%, #6EE0EF 100%); /* 标准 */
+  --gradient-brand-2: linear-gradient(135deg, #3AC8DB 0%, #B2F4F5 100%); /* 柔光 */
+  --gradient-brand-3: linear-gradient(135deg, #00899B 0%, #CAF9FF 100%); /* 深到冰 */
+
+  /* ─────────────────────────────────────────────
+   * COLOR · NEUTRAL SCALE
+   * ───────────────────────────────────────────── */
+  --color-neutral-0:   #FFFFFF;
+  --color-neutral-50:  #F9FAFB;
+  --color-neutral-100: #F3F4F6;
+  --color-neutral-150: #F2F3F5;
+  --color-neutral-200: #E5E7EB;
+  --color-neutral-300: #D1D5DB;
+  --color-neutral-400: #9CA3AF;
+  --color-neutral-600: #4B5563;
+  --color-neutral-700: #374151;
+  --color-neutral-900: #111827;
+  --color-neutral-950: #000000;
+
+  /* ─────────────────────────────────────────────
+   * COLOR · DARK MODE SURFACES
+   * ───────────────────────────────────────────── */
+  --color-dark-bg-base:    #14151A;  /* 最底层背景 */
+  --color-dark-bg-raised:  #1A1A1A;  /* 次级背景 */
+  --color-dark-bg-card:    #2B2C3C;  /* 卡片 / 气泡 */
+  --color-dark-bg-overlay: #333333;  /* 浮层 */
+
+  /* ─────────────────────────────────────────────
+   * COLOR · SEMANTIC — TEXT
+   * ───────────────────────────────────────────── */
+  --color-text-primary:     var(--color-neutral-900); /* 主文本 · #111827 来自 AI-Design-System */
+  --color-text-secondary:   var(--color-neutral-700); /* 次级文本 · #374151 来自 AI-Design-System */
+  --color-text-tertiary:    var(--color-neutral-400); /* 辅助说明 */
+  --color-text-placeholder: var(--color-neutral-300); /* 占位文字 */
+  --color-text-on-dark:     var(--color-neutral-0);   /* 深色背景文字 */
+  --color-text-brand:       var(--color-brand-cyan);  /* 品牌色文字 */
+
+  /* ─────────────────────────────────────────────
+   * COLOR · SEMANTIC — BACKGROUND
+   * ───────────────────────────────────────────── */
+  --color-bg-page:        var(--color-neutral-50);      /* 页面主背景 (color-bg-main) */
+  --color-bg-card:        var(--color-neutral-0);       /* 卡片背景 */
+  --color-bg-subtle:      var(--color-neutral-100);     /* 区块背景 */
+  --color-bg-inset:       var(--color-neutral-150);     /* 内嵌区域 */
+  --color-bg-brand-tint:  var(--color-brand-cyan-tint); /* 品牌底色 #EFFBFC */
+
+  /* ─────────────────────────────────────────────
+   * COLOR · SEMANTIC — BORDER
+   * ───────────────────────────────────────────── */
+  --color-border-default: var(--color-neutral-200); /* 默认边框 */
+  --color-border-subtler: #F1F5F9;                  /* 最弱边框 · 来自 AI-Design-System */
+  --color-border-subtle:  var(--color-neutral-300); /* 弱边框 */
+  --color-border-brand:   var(--color-brand-cyan);  /* 品牌边框 · 来自 AI-Design-System */
+  --color-border-focus:   var(--color-brand-purple);/* 焦点边框 */
+
+  /* ─────────────────────────────────────────────
+   * COLOR · STATUS
+   * ───────────────────────────────────────────── */
+  --color-status-success: #22C55E;
+  --color-status-warning: #FBBF24;
+  --color-status-error:   #F87171;
+
+  /* ─────────────────────────────────────────────
+   * TYPOGRAPHY · FONT FAMILY
+   * ───────────────────────────────────────────── */
+  --font-family-chinese: 'PingFang SC', sans-serif;
+  --font-family-latin:   'Inter', sans-serif;
+  --font-family-base:    'Inter', 'PingFang SC', sans-serif;
+
+  /* ─────────────────────────────────────────────
+   * TYPOGRAPHY · FONT WEIGHT
+   * ───────────────────────────────────────────── */
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+
+  /* ─────────────────────────────────────────────
+   * TYPOGRAPHY · FONT SIZE
+   * ───────────────────────────────────────────── */
+  --font-size-xs:   10px;
+  --font-size-sm:   11px;
+  --font-size-base: 12px;
+  --font-size-md:   14px;
+  --font-size-lg:   16px;
+  --font-size-xl:   18px;
+  --font-size-2xl:  20px;
+  --font-size-3xl:  24px;
+  --font-size-hero: 48px;
+
+  /* ─────────────────────────────────────────────
+   * TYPOGRAPHY · LINE HEIGHT
+   * ───────────────────────────────────────────── */
+  --line-height-xs:   14px;
+  --line-height-sm:   15.4px;
+  --line-height-base: 16.8px;
+  --line-height-md:   19.6px;
+  --line-height-lg:   22.4px;
+  --line-height-xl:   25.2px;
+  --line-height-2xl:  28px;
+  --line-height-3xl:  33.6px;
+  --line-height-hero: 67.2px;
+
+  /* ─────────────────────────────────────────────
+   * TYPOGRAPHY · LETTER SPACING
+   * ───────────────────────────────────────────── */
+  --letter-spacing-normal: 0px;
+  --letter-spacing-wide:   0.5px; /* 标题 / 关键词 */
+
+  /* ─────────────────────────────────────────────
+   * SPACING — 4px base grid
+   * ───────────────────────────────────────────── */
+  --spacing-0:  0px;
+  --spacing-1:  2px;
+  --spacing-2:  4px;
+  --spacing-3:  8px;
+  --spacing-4:  12px;
+  --spacing-5:  16px;
+  --spacing-6:  20px;
+  --spacing-7:  24px;
+  --spacing-8:  32px;
+  --spacing-9:  40px;
+  --spacing-10: 56px;
+  --spacing-11: 80px;
+  --spacing-12: 96px;
+  --spacing-13: 120px;
+  --spacing-14: 150px;
+
+  /* ─────────────────────────────────────────────
+   * BORDER RADIUS
+   * ───────────────────────────────────────────── */
+  --radius-none: 0px;
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   8px;
+  --radius-xl:   12px;
+  --radius-2xl:  16px;
+  --radius-3xl:  20px;
+  --radius-full: 1000px; /* 胶囊 / 圆形 */
+
+  /* ─────────────────────────────────────────────
+   * SHADOW · ELEVATION
+   * ───────────────────────────────────────────── */
+  --shadow-brand-glow: 0px 0px 3px 0px rgba(58, 200, 219, 0.25); /* 品牌发光 */
+  --shadow-hairline:   0px 1.2px 1.2px 0px rgba(0, 0, 0, 0.25); /* 细线 */
+  --shadow-sm:         0px 2px 8px 0px rgba(0, 0, 0, 0.06);     /* 卡片悬浮 */
+  --shadow-md:         0px 6px 16px 0px rgba(0, 0, 0, 0.12);    /* 弹出层 */
+  --shadow-lg:         0px 12px 32px 0px rgba(0, 0, 0, 0.18);   /* Modal */
+}
+
+/* ─────────────────────────────────────────────
+ * DARK MODE OVERRIDES
+ * ───────────────────────────────────────────── */
+[data-theme="dark"],
+.dark {
+  --color-text-primary:     #FFFFFF;
+  --color-text-secondary:   #9CA3AF;
+  --color-text-tertiary:    #4B5563;
+  --color-text-placeholder: #374151;
+
+  --color-bg-page:   var(--color-dark-bg-base);
+  --color-bg-card:   var(--color-dark-bg-card);
+  --color-bg-subtle: var(--color-dark-bg-raised);
+  --color-bg-inset:  var(--color-dark-bg-overlay);
+
+  --color-border-default: rgba(255, 255, 255, 0.08);
+  --color-border-subtle:  rgba(255, 255, 255, 0.05);
+}
+
+/* ─────────────────────────────────────────────
+ * TYPOGRAPHY UTILITY CLASSES
+ * ───────────────────────────────────────────── */
+.text-label-xs {
+  font-family: var(--font-family-chinese);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-xs);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-body-sm {
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-body {
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-body-md {
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-label {
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-lg);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-heading-sm {
+  font-family: var(--font-family-chinese);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-lg);
+  line-height: 20px;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.text-heading-md {
+  font-family: var(--font-family-chinese);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-2xl);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.text-heading-lg {
+  font-family: var(--font-family-chinese);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-3xl);
+  line-height: var(--line-height-3xl);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.text-display {
+  font-family: var(--font-family-chinese);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-hero);
+  line-height: var(--line-height-hero);
+  letter-spacing: var(--letter-spacing-normal);
+}
