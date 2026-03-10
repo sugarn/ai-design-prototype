@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200">
+<title>Document Card · 文档任务卡片</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,'PingFang SC','Helvetica Neue',Arial,sans-serif;
+  font-size:14px;-webkit-font-smoothing:antialiased;
+  background:#f3f4f6;min-height:100vh;
+  display:flex;align-items:flex-start;justify-content:center;
+  padding:64px 40px;
+}
+
+/* ── DOCUMENT CARD ─────────────────────────────────── */
+.doc-card{
+  width:720px;background:#fff;border-radius:12px;
+  border:1px solid #e5e7eb;
+  box-shadow:0 2px 12px rgba(0,0,0,.07),0 1px 3px rgba(0,0,0,.04);
+  overflow:hidden;
+}
+
+/* Header */
+.dc-header{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;border-bottom:1px solid #f3f4f6;
+}
+.dc-icon{
+  width:32px;height:36px;border-radius:3px;
+  background:#4285f4;flex-shrink:0;position:relative;overflow:hidden;
+}
+.dc-icon::before{
+  content:'';position:absolute;top:0;right:0;
+  border-style:solid;border-width:0 10px 10px 0;
+  border-color:transparent #3468c0 transparent transparent;
+}
+.dc-icon-lines{
+  position:absolute;bottom:6px;left:4px;right:4px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.dc-icon-line{height:3px;background:rgba(255,255,255,.9);border-radius:1px}
+.dc-icon-line:last-child{width:67%}
+.dc-title{
+  flex:1;font-size:15px;font-weight:600;color:#111827;
+  line-height:1.3;letter-spacing:-.2px;
+}
+.dc-menu{
+  display:flex;gap:3px;padding:6px;border-radius:6px;cursor:pointer;
+  color:#9ca3af;flex-shrink:0;transition:background .12s;
+}
+.dc-menu:hover{background:#f3f4f6;color:#374151}
+.dc-menu span{
+  width:4px;height:4px;background:currentColor;
+  border-radius:50%;display:block;
+}
+
+/* Body */
+.dc-body{padding:20px 24px 24px}
+
+.dc-desc{
+  font-size:14px;color:#374151;line-height:1.65;
+  margin-bottom:20px;
+}
+
+/* Section heading */
+.dc-section-title{
+  font-size:18px;font-weight:700;color:#111827;
+  margin-bottom:16px;letter-spacing:-.3px;
+}
+
+/* Table */
+.dc-table{
+  width:100%;border-collapse:collapse;
+  border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;
+  font-size:13px;
+}
+.dc-table thead tr{background:#f9fafb}
+.dc-table th{
+  padding:10px 12px;text-align:left;
+  font-size:12px;font-weight:500;color:#6b7280;
+  border-bottom:1px solid #e5e7eb;white-space:nowrap;
+}
+.dc-table td{
+  padding:10px 12px;color:#374151;
+  border-bottom:1px solid #e5e7eb;
+  vertical-align:middle;
+}
+.dc-table tr:last-child td{border-bottom:none}
+.dc-table td:first-child{font-weight:400}
+.dc-table td.link-col{color:#2563eb}
+.dc-table td.link-col.pending{color:#9ca3af}
+
+/* Faded rows */
+.dc-table tr.faded td{color:#9ca3af}
+.dc-table tr.faded td.link-col{color:#9ca3af}
+
+/* Column widths */
+.dc-table th:nth-child(1),.dc-table td:nth-child(1){width:300px}
+.dc-table th:nth-child(2),.dc-table td:nth-child(2){width:140px}
+.dc-table th:nth-child(3),.dc-table td:nth-child(3){width:auto}
+
+/* ── CONTEXT: AI chat bubble wrapping the card ──── */
+.chat-wrap{width:720px;display:flex;flex-direction:column;gap:24px}
+
+.ai-row{display:flex;gap:12px;align-items:flex-start}
+.ai-avatar{
+  width:32px;height:32px;border-radius:9.6px;
+  background:#fff;border:1px solid #e5e7eb;
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+}
+.ai-avatar svg{width:18px;height:14px}
+.ai-bubble{flex:1;display:flex;flex-direction:column;gap:12px}
+.ai-text{font-size:14px;color:#111827;line-height:1.6;padding-top:6px}
+
+/* ── Label ──────────────────────────────────────── */
+.page-label{
+  width:720px;margin-bottom:24px;
+  font-size:12px;color:#9ca3af;letter-spacing:.04em;text-transform:uppercase;font-weight:500;
+}
+</style>
+</head>
+<body>
+
+<!-- Inline icon sprite -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-logo" viewBox="0 0 54 42">
+    <g fill="currentColor">
+      <rect x="0"  y="18" width="6" height="6" rx="1"/>
+      <rect x="8"  y="12" width="6" height="6" rx="1"/>
+      <rect x="16" y="6"  width="6" height="6" rx="1"/>
+      <rect x="24" y="0"  width="6" height="6" rx="1"/>
+      <rect x="32" y="6"  width="6" height="6" rx="1"/>
+      <rect x="40" y="12" width="6" height="6" rx="1"/>
+      <rect x="48" y="18" width="6" height="6" rx="1"/>
+      <rect x="8"  y="24" width="6" height="6" rx="1"/>
+      <rect x="16" y="30" width="6" height="6" rx="1"/>
+      <rect x="24" y="24" width="6" height="6" rx="1"/>
+      <rect x="40" y="24" width="6" height="6" rx="1"/>
+      <rect x="32" y="30" width="6" height="6" rx="1"/>
+    </g>
+  </symbol>
+</svg>
+
+<div class="chat-wrap">
+
+  <div class="page-label">Document Card · 文档任务卡片 Component</div>
+
+  <!-- AI response row with document card -->
+  <div class="ai-row">
+    <div class="ai-avatar">
+      <svg fill="#111827"><use href="#i-logo"/></svg>
+    </div>
+
+    <div class="ai-bubble">
+      <p class="ai-text">
+        您好，我已经为您整理了近三年国内外 AI 产品设计系统的研究报告。报告中包含了设计系统名称、所在公司、链接，并重点分析了设计语言、设计风格和设计价值观。对于部分设计系统，由于信息获取的限制，其设计风格和价值观部分标记为"待研究"。
+      </p>
+      <p class="ai-text" style="margin-top:-8px">请查阅附件中的 Markdown 格式报告。</p>
+
+      <!-- Document Card Component -->
+      <div class="doc-card">
+
+        <!-- Header -->
+        <div class="dc-header">
+          <div class="dc-icon">
+            <div class="dc-icon-lines">
+              <div class="dc-icon-line"></div>
+              <div class="dc-icon-line"></div>
+              <div class="dc-icon-line"></div>
+            </div>
+          </div>
+          <div class="dc-title">近三年国内外 AI 产品设计系统研究报告</div>
+          <div class="dc-menu">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+
+        <!-- Body -->
+        <div class="dc-body">
+          <p class="dc-desc">
+            本报告旨在全面梳理和分析近三年来国内外主流科技公司在 AI 产品设计领域的探索与实践，重点关注其设计系统的演进、设计语言、设计风格及核心价值观。
+          </p>
+
+          <div class="dc-section-title">AI 设计系统总览</div>
+
+          <table class="dc-table">
+            <thead>
+              <tr>
+                <th>设计系统名称</th>
+                <th>所在公司</th>
+                <th>主要链接</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Fluent UI</td>
+                <td>Microsoft</td>
+                <td class="link-col">https://developer.microsoft.com/...</td>
+              </tr>
+              <tr>
+                <td>Material Design</td>
+                <td>Google</td>
+                <td class="link-col">https://material.io/</td>
+              </tr>
+              <tr>
+                <td>Liquid Glass</td>
+                <td>Apple</td>
+                <td class="link-col pending">链接待补充</td>
+              </tr>
+              <tr>
+                <td>Carbon Design System</td>
+                <td>IBM</td>
+                <td class="link-col">https://carbondesignsystem.com/</td>
+              </tr>
+              <tr class="faded">
+                <td>Salesforce Einstein</td>
+                <td>Salesforce</td>
+                <td class="link-col">https://www.salesforce.com/</td>
+              </tr>
+              <tr class="faded">
+                <td>Motiff AI Tool</td>
+                <td>Motiff</td>
+                <td class="link-col pending">链接待补充</td>
+              </tr>
+              <tr class="faded">
+                <td>Vercel AI SDK</td>
+                <td>Vercel</td>
+                <td class="link-col">https://vercel.com/blog/ai-p...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div><!-- /doc-card -->
+
+    </div><!-- /ai-bubble -->
+  </div><!-- /ai-row -->
+
+</div>
+</body>
+</html>
